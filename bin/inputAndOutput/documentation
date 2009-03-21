@@ -1,0 +1,70 @@
+rfc-modell: http://www.ietf.org/rfc/rfc959.txt
+
+RFC 959                                                     October 1985
+File Transfer Protocol
+
+
+   2.3.  THE FTP MODEL
+
+
+
+                                            -------------
+                                            |/---------\|
+                                            ||   User  ||    --------
+                                            ||Interface|<--->| User |
+                                            |\----^----/|    --------
+                  ----------                |     |     |
+                  |/------\|  FTP Commands  |/----V----\|
+                  ||Server|<---------------->|   User  ||
+                  ||  PI  ||   FTP Replies  ||    PI   ||
+                  |\--^---/|                |\----^----/|
+                  |   |    |                |     |     |
+      --------    |/--V---\|      Data      |/----V----\|    --------
+      | File |<--->|Server|<---------------->|  User   |<--->| File |
+      |System|    || DTP  ||   Connection   ||   DTP   ||    |System|
+      --------    |\------/|                |\---------/|    --------
+                  ----------                -------------
+
+                  Server-FTP                   USER-FTP
+
+      NOTES: 1. The data connection may be used in either direction.
+             2. The data connection need not exist all of the time.
+
+                      Figure 1  Model for FTP Use
+
+ 			PI: The protocol interpreter.  The user and server sides of the
+         		protocol have distinct roles implemented in a user-PI and a
+         		server-PI.
+         		
+         	DTP: The data transfer process establishes and manages the data
+         		 connection.  The DTP can be passive or active.
+         		
+ 			
+
+
+Postel & Reynolds                                               [Page 8]
+
+
+Tobias Letschka: Interpretation and implementation
+
+
+
+                                            -------------
+                                            |/---------\|
+                                            ||   User  ||    --------
+                                            ||Interface|<--->| User |
+                                            |\----^----/|    --------
+                  ----------                |     |     |
+                  |/------\|  FTP Commands  |/----V----\|
+                  ||Server|<---------------->|	 Ftp   ||	
+                  							|| Message ||
+                  ||  PI  ||   FTP Replies  ||  Socket ||
+                  |\--^---/|                |\----^----/|
+                  |   |    |                |     |     |
+      --------    |/--V---\|      Data      |/----V----\|    --------
+      | File |<--->|Server|<---------------->| FtpData |<--->| File |
+      |System|    || DTP  ||   Connection   ||  Socket ||    |System|
+      --------    |\------/|                |\---------/|    --------
+                  ----------                -------------
+
+                  Server-FTP                   USER-FTP
