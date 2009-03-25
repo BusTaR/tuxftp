@@ -13,7 +13,7 @@ package rfc;
 
 public class FtpServiceCommands {
 	
-	private static inputAndOutput.FtpMessageSocket socketMSG = new inputAndOutput.FtpMessageSocket ();
+	private static sockets.FtpMessageSocket socketMSG = new sockets.FtpMessageSocket ();
 	
 	/*
 	 * 4.1.3.  FTP SERVICE COMMANDS

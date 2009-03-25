@@ -9,7 +9,7 @@ package rfc;
  */
 public class OptionalCommands {
 	
-	private static inputAndOutput.FtpMessageSocket socketMSG = new inputAndOutput.FtpMessageSocket ();
+	private static sockets.FtpMessageSocket socketMSG = new sockets.FtpMessageSocket ();
 /*	
 
  * SMNT - Structure Mount

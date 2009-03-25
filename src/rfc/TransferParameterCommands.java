@@ -8,7 +8,7 @@ package rfc;
  *
  */
 public class TransferParameterCommands {
-	private static inputAndOutput.FtpMessageSocket socketMSG = new inputAndOutput.FtpMessageSocket ();
+	private static sockets.FtpMessageSocket socketMSG = new sockets.FtpMessageSocket ();
 	
 	
 

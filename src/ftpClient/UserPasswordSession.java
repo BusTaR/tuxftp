@@ -1,13 +1,13 @@
 package ftpClient;
 
-import inputAndOutput.FtpDataSocket;
-import inputAndOutput.FtpMessageSocket;
-import inputAndOutput.FtpServerAnswerMessages;
-import inputAndOutput.FtpServerDataMessages;
 import rfc.AccessControlCommands;
 import rfc.FtpServiceCommands;
 import rfc.OptionalCommands;
 import rfc.TransferParameterCommands;
+import socketMessages.FtpServerAnswerMessages;
+import socketMessages.FtpServerDataMessages;
+import sockets.FtpDataSocket;
+import sockets.FtpMessageSocket;
 import userInterface.UserInterface;
 
 public class UserPasswordSession implements Runnable {
@@ -31,7 +31,7 @@ public class UserPasswordSession implements Runnable {
 	    	
 	    	
 	    	access.sendUserName(username);
-	    	inputAndOutput.FtpServerAnswerMessages.readInputStream();
+	    	socketMessages.FtpServerAnswerMessages.readInputStream();
 	    	access.sendPassword(password);
 	    	try {
 				Thread.sleep(1000);  // wait for server answere
@@ -39,9 +39,9 @@ public class UserPasswordSession implements Runnable {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-	      	inputAndOutput.FtpServerAnswerMessages.readInputStream();
+	      	socketMessages.FtpServerAnswerMessages.readInputStream();
 	      	service.sendSystem();
-	    	inputAndOutput.FtpServerAnswerMessages.readInputStream();
+	    	socketMessages.FtpServerAnswerMessages.readInputStream();
 	    	FtpServiceCommands.sendFEAT();
 	    	try {
 				Thread.sleep(1000);  // wait for server answere
@@ -49,20 +49,20 @@ public class UserPasswordSession implements Runnable {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-	    	inputAndOutput.FtpServerAnswerMessages.readInputStream();
+	    	socketMessages.FtpServerAnswerMessages.readInputStream();
 	    	service.sendPrintWorkingdirectory();
-	    	inputAndOutput.FtpServerAnswerMessages.readInputStream();
+	    	socketMessages.FtpServerAnswerMessages.readInputStream();
 	    	transfer.sendPASV();
-	    	inputAndOutput.FtpServerAnswerMessages.readInputStream();
+	    	socketMessages.FtpServerDataMessages.readPasvAnswer();
 	    	FtpDataSocket data = new FtpDataSocket();
-	    	data.startDataSocket(FtpServerAnswerMessages.getRETURN_IP(), 
-	    							FtpServerAnswerMessages.getRETURN_PORT());
+	    	data.startDataSocket(FtpServerDataMessages.getRETURN_IP(), 
+	    							FtpServerDataMessages.getRETURN_PORT());
 	    	
 	    	service.sendLIST();  // server sends a port
-	    	inputAndOutput.FtpServerAnswerMessages.readInputStream();
+	    	socketMessages.FtpServerAnswerMessages.readInputStream();
 	    	FtpServerDataMessages dataMsg = new FtpServerDataMessages();
 	    	dataMsg.awaitsLISTanswer();
-	    	inputAndOutput.FtpServerAnswerMessages.readInputStream();
+	    	socketMessages.FtpServerAnswerMessages.readInputStream();
 	    	data.closeDataSocket();
 	    	userInterface.Interface();
 	    	System.out.println("Client: Closing Connection");

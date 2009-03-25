@@ -1,17 +1,17 @@
 package application;
 
-import inputAndOutput.FtpServerAnswerMessages;
+import socketMessages.FtpServerAnswerMessages;
 import ftpClient.AnonymousSession;
 import ftpClient.UserPasswordSession;
 
 public class ApplicationFtpClient {
 
 
-	static UserPasswordSession userpass = new UserPasswordSession();
-	static Thread userpassThread = new Thread(userpass);
+	private static UserPasswordSession userpass = new UserPasswordSession();
+	private static Thread userpassThread = new Thread(userpass);
 	
-	public static FtpServerAnswerMessages ftpAnswere = new FtpServerAnswerMessages();
-	public static Thread ftpAnswereThread = new Thread(ftpAnswere);
+	private static FtpServerAnswerMessages ftpAnswere = new FtpServerAnswerMessages();
+	private static Thread ftpAnswereThread = new Thread(ftpAnswere);
 	
 
 	

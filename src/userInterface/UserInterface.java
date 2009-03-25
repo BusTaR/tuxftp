@@ -1,8 +1,5 @@
 package userInterface;
 
-import inputAndOutput.FtpDataSocket;
-import inputAndOutput.FtpMessageSocket;
-import inputAndOutput.FtpServerAnswerMessages;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -10,6 +7,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
+
+import socketMessages.FtpServerAnswerMessages;
+import sockets.FtpDataSocket;
+import sockets.FtpMessageSocket;
 
 /**
  * @author Tobias Letschka
@@ -22,7 +23,6 @@ public class UserInterface {
 
 		int buffersize = 1024;
 		char stdInbuffer[] = new char[buffersize];
-		char serverbuffer[] = new char[buffersize];
 
 		BufferedReader stdIn = new BufferedReader(new InputStreamReader(
 				System.in)); // makes reading from keyboard/shell ready
@@ -36,17 +36,20 @@ public class UserInterface {
 		System.out.println("********* welcome to UserInterface **********");
 
 		try {
-
 			while (true) {
 				System.out.println("please insert a command: (e.g. HELP) ");
 				// 1.1 read from Keyboard/shell into a buffer
-				stdInCounter = stdIn.read(stdInbuffer);
+				
+					stdInCounter = stdIn.read(stdInbuffer);
+
 				// 1.2 convert char to string
 				String stdInString = new String(stdInbuffer, 0, stdInCounter);
 
 				if (inputRFCHandling(stdInString) == true) {
 					System.out.println("command transfered");
 
+				} else {
+					FtpMessageSocket.out.println(stdInString);
 				}
 				/*				
 				closing userInterface
@@ -59,9 +62,8 @@ public class UserInterface {
 				readServerAnswer(); // testweise
 
 			}
-
 		} catch (IOException e) {
-			System.out.println(e.getMessage());
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -150,13 +152,13 @@ public class UserInterface {
 		 */
 		int count;
 		if((count = foundToken.length) > 1 ) {
-			if (FtpServiceComImpl.userDownload(foundToken[0], foundToken[1]) == true) {
+			if (FtpServiceComImpl.downloadFile(foundToken[0], foundToken[1]) == true) {
 				return true;
 			}
-			if(FtpServiceComImpl.userChangeDir(foundToken[0], foundToken[1]) == true) {
+			if(FtpServiceComImpl.changeDirectory(foundToken[0], foundToken[1]) == true) {
 				return true;
 			}
-			if(FtpServiceComImpl.userUpload(foundToken[0], foundToken[1]) == true) {
+			if(FtpServiceComImpl.uploadFile(foundToken[0], foundToken[1]) == true) {
 				return true;
 			}
 		}

@@ -6,10 +6,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.SocketException;
 
-import inputAndOutput.FtpDataSocket;
-import inputAndOutput.FtpMessageSocket;
-import inputAndOutput.FtpServerAnswerMessages;
-import inputAndOutput.FtpServerDataMessages;
+import socketMessages.FtpServerAnswerMessages;
+import socketMessages.FtpServerDataMessages;
+import sockets.FtpDataSocket;
+import sockets.FtpMessageSocket;
+
 
 /*
  * Following Commands are implemented in this class
@@ -43,7 +44,7 @@ public class FtpServiceComImpl {
 	
 	
 	/**
-	 * displayed server operationg System
+	 * displayed server operating System
 	 * @param command
 	 * @return
 	 */
@@ -95,7 +96,7 @@ public class FtpServiceComImpl {
 		data.closeDataSocket();
 	}
 
-	public static boolean userChangeDir(String command, String directory) {
+	public static boolean changeDirectory(String command, String directory) {
 		if (command.contains(rfc.AccessControlCommands.CHANGE_WORK_DIR)
 				&& directory != null) {
 			FtpMessageSocket.out
@@ -107,7 +108,7 @@ public class FtpServiceComImpl {
 		return false;
 	}
 
-	public static boolean userDownload(String command, String fileName) {
+	public static boolean downloadFile(String command, String fileName) {
 		// If command == RETR
 		if (command.contains(rfc.FtpServiceCommands.RETRIEVE)
 				&& fileName != null) {
@@ -153,7 +154,7 @@ public class FtpServiceComImpl {
 		return false;
 	}
 
-	public static boolean userUpload(String command, String fileName) {
+	public static boolean uploadFile(String command, String fileName) {
 		// find command
 		if(command.contains(rfc.FtpServiceCommands.STORE)
 													&& fileName != null) {
