@@ -64,9 +64,10 @@ public class FtpServerAnswerMessages implements Runnable {
 
 		// endless loop
 		while (true) {
-			// if any byte is available (start)
+			
 			try {
 				int counter;
+				// if any byte is available (start)
 				if ((counter = client.getSocketInput().available()) != 0) {
 					// read bytes till 0 byte are available (end)
 					while ((counter = client.getSocketInput().available()) != 0) {
@@ -75,18 +76,17 @@ public class FtpServerAnswerMessages implements Runnable {
 						System.out.println("< Server: ");
 						String fromServer = new String(buffer, 0, count);
 						System.out.println(fromServer);
-						//analysePASVstring(fromServer);
 					}
 					try {
 						Thread.sleep(100);
 						break;
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
+						System.err.println("InterruptedException in FtpServerAnswerMessages: " + e.getMessage());
 						e.printStackTrace();
 					}
 				}
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				System.err.println("IOException in FtpServerAnswerMessages: " + e.getMessage());
 				e.printStackTrace();
 			}
 		}

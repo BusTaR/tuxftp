@@ -49,8 +49,8 @@ public class FtpServiceComImpl {
 	 * @return
 	 */
 	public static boolean userSendSYST(String command) {
-		if(command.contains(rfc.FtpServiceCommands.SYSTEM)) {
-			rfc.FtpServiceCommands.sendSystem();
+		if(command.contains(rfc765.FtpServiceCommands.SYSTEM)) {
+			rfc765.FtpServiceCommands.sendSystem();
 		}
 		return false;
 	}
@@ -97,10 +97,10 @@ public class FtpServiceComImpl {
 	}
 
 	public static boolean changeDirectory(String command, String directory) {
-		if (command.contains(rfc.AccessControlCommands.CHANGE_WORK_DIR)
+		if (command.contains(rfc765.AccessControlCommands.CHANGE_WORK_DIR)
 				&& directory != null) {
 			FtpMessageSocket.out
-					.println(rfc.AccessControlCommands.CHANGE_WORK_DIR + " "
+					.println(rfc765.AccessControlCommands.CHANGE_WORK_DIR + " "
 							+ directory);
 			FtpServerAnswerMessages.readInputStream();
 			FtpServiceComImpl.userSendLIST();
@@ -110,12 +110,12 @@ public class FtpServiceComImpl {
 
 	public static boolean downloadFile(String command, String fileName) {
 		// If command == RETR
-		if (command.contains(rfc.FtpServiceCommands.RETRIEVE)
+		if (command.contains(rfc765.FtpServiceCommands.RETRIEVE)
 				&& fileName != null) {
 			FtpDataSocket data = new FtpDataSocket();
 			FtpServerDataMessages dataMsg = new FtpServerDataMessages();
 			dataMsg.setPasvMode();
-			FtpMessageSocket.out.println(rfc.FtpServiceCommands.RETRIEVE + " "
+			FtpMessageSocket.out.println(rfc765.FtpServiceCommands.RETRIEVE + " "
 					+ fileName);
 			FtpServerAnswerMessages.readInputStream();
 
@@ -156,7 +156,7 @@ public class FtpServiceComImpl {
 
 	public static boolean uploadFile(String command, String fileName) {
 		// find command
-		if(command.contains(rfc.FtpServiceCommands.STORE)
+		if(command.contains(rfc765.FtpServiceCommands.STORE)
 													&& fileName != null) {
 			//1. list local filesystem
 			//2. set pasv or port mode ~ pasiv transfermode btw activ transfermode
@@ -164,7 +164,7 @@ public class FtpServiceComImpl {
 			FtpServerDataMessages dataMsg = new FtpServerDataMessages();
 			dataMsg.setPasvMode();
 			// send rfc command to server
-			FtpMessageSocket.out.println(rfc.FtpServiceCommands.STORE);
+			FtpMessageSocket.out.println(rfc765.FtpServiceCommands.STORE);
 			// read answer
 			FtpServerAnswerMessages.readInputStream();
 			return true;

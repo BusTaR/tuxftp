@@ -1,9 +1,9 @@
 package ftpClient;
 
-import rfc.AccessControlCommands;
-import rfc.FtpServiceCommands;
-import rfc.OptionalCommands;
-import rfc.TransferParameterCommands;
+import rfc765.AccessControlCommands;
+import rfc765.FtpServiceCommands;
+import rfc765.OptionalCommands;
+import rfc765.TransferParameterCommands;
 import socketMessages.FtpServerAnswerMessages;
 import socketMessages.FtpServerDataMessages;
 import sockets.FtpDataSocket;
@@ -16,7 +16,7 @@ public class UserPasswordSession implements Runnable {
 
 	@Override
 	public void run() {
-		loginSession("pr0-talk.de",21,"web16","XGT3GEmY");
+		loginSession("pr0-talk.de",21,"web16","Password");
 		
 		
 	}

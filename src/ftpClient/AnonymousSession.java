@@ -1,10 +1,10 @@
 package ftpClient;
 
 
-import rfc.AccessControlCommands;
-import rfc.FtpServiceCommands;
-import rfc.OptionalCommands;
-import rfc.TransferParameterCommands;
+import rfc765.AccessControlCommands;
+import rfc765.FtpServiceCommands;
+import rfc765.OptionalCommands;
+import rfc765.TransferParameterCommands;
 import socketMessages.FtpServerAnswerMessages;
 import socketMessages.FtpServerDataMessages;
 import sockets.FtpDataSocket;
@@ -36,12 +36,20 @@ public class AnonymousSession implements Runnable {
 
 	}
 
+	/**
+	 * polymorphy: see also anonymousSession(String address, int port)
+	 * a easy to handling methode to build a anonymous connection to an default Ftp-Server
+	 */
 	private static void anonymousSession() {
 
 		anonymousSession(DEFAULT_ADDRESS, DEFAULT_PORT);
 
 	}
 
+	/**
+	 * @param address
+	 * @param port
+	 */
 	private static void anonymousSession(String address, int port) {
 		TransferParameterCommands transfer = new TransferParameterCommands();
 		OptionalCommands optional = new OptionalCommands();

@@ -1,4 +1,4 @@
-package rfc;
+package rfc765;
 /**
  * @author Tobias Letschka
  * @see http://www.ietf.org/rfc/rfc959.txt

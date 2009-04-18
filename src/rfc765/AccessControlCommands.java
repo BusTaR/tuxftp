@@ -1,4 +1,6 @@
-package rfc;
+package rfc765;
+import sockets.FtpMessageSocket;
+import ftpClient.AnonymousSession;
 
 /**
  * @author Tobias Letschka
@@ -8,22 +10,21 @@ package rfc;
  * 
  *
  */
-import sockets.FtpMessageSocket;
-import ftpClient.AnonymousSession;
+
+/*
+ * 4.1.1. ACCESS CONTROL COMMANDS 
+ * USER NAME (USER) 
+ * PASSWORD (PASS) 
+ * ACCOUNT (ACCT) 
+ * CHANGE WORKING DIRECTORY (CWD) 
+ * CHANGE TO PARENT DIRECTORY (CDUP)
+ * STRUCTURE MOUNT (SMNT) 
+ * REINITIALIZE (REIN) 
+ * LOGOUT (QUIT)
+ */
 
 public class AccessControlCommands {
-	private static sockets.FtpMessageSocket socketMSG = new sockets.FtpMessageSocket();
-	/*
-	 * 4.1.1. ACCESS CONTROL COMMANDS 
-	 * USER NAME (USER) 
-	 * PASSWORD (PASS) 
-	 * ACCOUNT (ACCT) 
-	 * CHANGE WORKING DIRECTORY (CWD) 
-	 * CHANGE TO PARENT DIRECTORY (CDUP)
-	 * STRUCTURE MOUNT (SMNT) 
-	 * REINITIALIZE (REIN) 
-	 * LOGOUT (QUIT)
-	 */
+
 
 	public final static String USERNAME = "USER";
 	public final static String PASSWORD = "PASS";
@@ -79,7 +80,7 @@ public class AccessControlCommands {
 	public static void sendPassword(String password) {
 		// Send Password to Server
 		System.out.println("> PASS: " + password);
-		socketMSG.output().println("PASS " + password);
+		FtpMessageSocket.output().println("PASS " + password);
 	}
 
 	/**
@@ -87,7 +88,7 @@ public class AccessControlCommands {
 	 */
 	public static void sendAccount() {
 		System.out.println("> ACCT");
-		socketMSG.output().println("ACCT");
+		FtpMessageSocket.output().println("ACCT");
 	}
 
 	/**
@@ -95,7 +96,7 @@ public class AccessControlCommands {
 	 */
 	public static void sendChangeWorkingDirectory() {
 		System.out.println("> CWD");
-		socketMSG.output().println("CWD");
+		FtpMessageSocket.output().println("CWD");
 	}
 
 	/**
@@ -103,7 +104,7 @@ public class AccessControlCommands {
 	 */
 	public static void sendChangeToParentDirectory() {
 		System.out.println("> CDUP");
-		socketMSG.output().println("CDUP");
+		FtpMessageSocket.output().println("CDUP");
 	}
 
 	/**
@@ -111,7 +112,7 @@ public class AccessControlCommands {
 	 */
 	public static void sendSTructureMount() {
 		System.out.println("> SMNT");
-		socketMSG.output().println("SMNT");
+		FtpMessageSocket.output().println("SMNT");
 	}
 
 	/**
@@ -124,7 +125,7 @@ public class AccessControlCommands {
 	 */
 	public static void sendRenitialize() {
 		System.out.println("> REIN");
-		socketMSG.output().println("REIN");
+		FtpMessageSocket.output().println("REIN");
 	}
 
 	/**
@@ -142,6 +143,6 @@ public class AccessControlCommands {
 	 */
 	public static void sendLogout() {
 		System.out.println("> QUIT");
-		socketMSG.output().println("QUIT");
+		FtpMessageSocket.output().println("QUIT");
 	}
 }
