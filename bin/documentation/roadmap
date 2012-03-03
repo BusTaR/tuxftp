@@ -1,0 +1,4 @@
+0. fix documentation
+1. implement all rfc 959 commands
+2. implement bash like userinterface
+2. a server to server connection controlled by user/client
