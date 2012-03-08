@@ -79,9 +79,9 @@ public class AnonymousSession {
 		
 		System.out.println("IP: " + dataMsg.getRETURN_IP() 
 									+ " und Port: " +dataMsg.getRETURN_PORT());
-		FtpDataSocket data = new FtpDataSocket(dataMsg.getRETURN_IP(),
+		FtpDataSocket dataSocket = new FtpDataSocket(dataMsg.getRETURN_IP(),
 				dataMsg.getRETURN_PORT());
-		data.startSocket();
+		dataSocket.startSocket();
 	
 	
 
@@ -91,12 +91,12 @@ public class AnonymousSession {
 		servAnsw.readInputStream();
 		
 
-		FtpServiceComImpl fserver = new FtpServiceComImpl(data, dataMsg, msgSocket);
+		FtpServiceComImpl fserver = new FtpServiceComImpl(dataSocket, dataMsg, msgSocket);
 		UserInterface userInterface = new UserInterface(fserver, msgSocket);
 		userInterface.Interface();
 		System.out.println("Client: Closing Connection");
 		msgSocket.closeMessageSocket();
-		data.closeDataSocket();
+		dataSocket.closeDataSocket();
 	}
 
 
