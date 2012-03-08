@@ -2,13 +2,13 @@ package application.ftpClient;
 
 
 import rfc765.AccessControlCommands;
-import rfc765.FtpServiceCommands;
+import rfc765.ServiceCommands;
 import rfc765.OptionalCommands;
 import rfc765.TransferParameterCommands;
-import socketMessages.FtpServerAnswerMessages;
-import socketMessages.FtpServerDataMessages;
 import sockets.FtpDataSocket;
 import sockets.FtpMessageSocket;
+import sockets.socketMessages.FtpServerAnswerMessages;
+import sockets.socketMessages.FtpServerDataMessages;
 import userInterface.FtpServiceComImpl;
 import userInterface.UserInterface;
 
@@ -49,54 +49,54 @@ public class AnonymousSession {
 
 		
 		msgSocket = new FtpMessageSocket(address,port);
-		msgSocket.startMessageSocket();
-		FtpServiceCommands service = new FtpServiceCommands(msgSocket);
+		msgSocket.startSocket();
+		ServiceCommands service = new ServiceCommands(msgSocket);
 		TransferParameterCommands transfer = new TransferParameterCommands(msgSocket);
 		OptionalCommands optional = new OptionalCommands(msgSocket);
-		AccessControlCommands access = new AccessControlCommands();
+		AccessControlCommands access = new AccessControlCommands(msgSocket);
 		FtpServerAnswerMessages servAnsw = new FtpServerAnswerMessages(msgSocket);
-		
-		access.sendUserName();
+
+		access.sendUserName(DEFAULT_USER);
 		servAnsw.readInputStream();
 		
 		access.sendPassword();
-		try {
-			Thread.sleep(1000); // wait for server answer
-		} catch (InterruptedException e1) {
-
-			e1.printStackTrace();
-		}
+//		try {
+//			Thread.sleep(1000); // wait for server answer
+//		} catch (InterruptedException e1) {
+//
+//			e1.printStackTrace();
+//		}
 		servAnsw.readInputStream();
 		service.sendSystem();
 		servAnsw.readInputStream();
 		service.sendFEAT();
-		try {
-			Thread.sleep(1000); // wait for server answere
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 		servAnsw.readInputStream();
 		service.sendPrintWorkingdirectory();
 		servAnsw.readInputStream();
 		transfer.sendPASV();
-		socketMessages.FtpServerDataMessages.readPasvAnswer();
-		FtpDataSocket data = new FtpDataSocket(FtpServerDataMessages.getRETURN_IP(),
-				FtpServerDataMessages.getRETURN_PORT());
+		FtpServerDataMessages dataMsg = new FtpServerDataMessages(msgSocket);
+		dataMsg.readPasvAnswer();
+		
+		System.out.println("IP: " + dataMsg.getRETURN_IP() 
+									+ " und Port: " +dataMsg.getRETURN_PORT());
+		FtpDataSocket data = new FtpDataSocket(dataMsg.getRETURN_IP(),
+				dataMsg.getRETURN_PORT());
+		data.startSocket();
+	
 	
 
 		service.sendLIST(); // server sends a port
 		servAnsw.readInputStream();
-		FtpServerDataMessages dataMsg = new FtpServerDataMessages(data, msgSocket);
-		dataMsg.awaitsLISTanswer();
+		//dataMsg.awaitsLISTanswer();
 		servAnsw.readInputStream();
-		data.closeDataSocket();
+		
 
 		FtpServiceComImpl fserver = new FtpServiceComImpl(data, dataMsg, msgSocket);
-		UserInterface userInterface = new UserInterface(fserver);
+		UserInterface userInterface = new UserInterface(fserver, msgSocket);
 		userInterface.Interface();
 		System.out.println("Client: Closing Connection");
-		FtpMessageSocket.closeMessageSocket();
+		msgSocket.closeMessageSocket();
+		data.closeDataSocket();
 	}
 
 

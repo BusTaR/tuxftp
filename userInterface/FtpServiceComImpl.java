@@ -1,16 +1,9 @@
 package userInterface;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.SocketException;
-
-import rfc765.FtpServiceCommands;
-import socketMessages.FtpServerAnswerMessages;
-import socketMessages.FtpServerDataMessages;
+import rfc765.ServiceCommands;
 import sockets.FtpDataSocket;
 import sockets.FtpMessageSocket;
+import sockets.socketMessages.FtpServerDataMessages;
 
 
 /*
@@ -44,12 +37,12 @@ import sockets.FtpMessageSocket;
 public class FtpServiceComImpl {
 	private FtpDataSocket data;
 	private FtpServerDataMessages dataMsg;
-	private FtpMessageSocket socketMsg;
+	private FtpMessageSocket msgSocket;
 	
 	public FtpServiceComImpl(FtpDataSocket data, FtpServerDataMessages dataMsg, FtpMessageSocket msg ) {
 		this.data = data;
 		this.dataMsg = dataMsg;
-		this.socketMsg = msg;
+		this.msgSocket = msg;
 	}
 	/**
 	 * displayed server operating System
@@ -57,8 +50,8 @@ public class FtpServiceComImpl {
 	 * @return
 	 */
 	public boolean userSendSYST(String command) {
-		if(command.contains(rfc765.FtpServiceCommands.SYSTEM)) {
-			FtpServiceCommands fscom = new FtpServiceCommands(socketMsg);
+		if(command.contains(rfc765.ServiceCommands.SYSTEM)) {
+			ServiceCommands fscom = new ServiceCommands(msgSocket);
 			fscom.sendSystem();
 		}
 		return false;
@@ -73,14 +66,7 @@ public class FtpServiceComImpl {
 	 */
 	public boolean userSendLIST(String command) {
 		if (command.contains("LIST")) {
-
-			dataMsg.setPasvMode();
-
-			FtpMessageSocket.output().println("LIST"); // send list command
-			//FtpServerAnswerMessages.readInputStream(); // read msg
-			dataMsg.awaitsLISTanswer();
-			//FtpServerAnswerMessages.readInputStream(); // read msg
-			data.closeDataSocket();
+			msgSocket.output().println("LIST"); // send list command
 			return true;
 		}
 		return false;
@@ -92,87 +78,81 @@ public class FtpServiceComImpl {
 	 * @see userChangeDir(String command, String directory)
 	 * 
 	 */
-	public void userSendLIST() {
-		dataMsg.setPasvMode();
+//	public void userSendLIST() {
+//		msgSocket.output().println("LIST"); // send list command
+//	}
+//
+//	public boolean changeDirectory(String command, String directory) {
+//		AccessControlCommands access = new AccessControlCommands(msgSocket);
+//		if (command.contains(access.)
+//				&& directory != null) {
+//			msgSocket.output()
+//					.println(rfc765.AccessControlCommands.CHANGE_WORK_DIR + " "
+//							+ directory);
+//			//FtpServerAnswerMessages.readInputStream();
+//			FtpServiceComImpl fservice = new FtpServiceComImpl(data, dataMsg, msgSocket);
+//			fservice.userSendLIST();
+//		}
+//		return false;
+//	}
 
-		FtpMessageSocket.output().println("LIST"); // send list command
-		//FtpServerAnswerMessages.readInputStream(); // read msg
-		dataMsg.awaitsLISTanswer();
-		//FtpServerAnswerMessages.readInputStream(); // read msg
-		data.closeDataSocket();
-	}
+//	public boolean downloadFile(String command, String fileName) {
+//		// If command == RETR
+//		if (command.contains(rfc765.FtpServiceCommands.RETRIEVE)
+//				&& fileName != null) {
+//			dataMsg.setPasvMode();
+//			socketMsg.output().println(rfc765.FtpServiceCommands.RETRIEVE + " "
+//					+ fileName);
+//			//FtpServerAnswerMessages.readInputStream();
+//
+//			try {
+//				// generate file: called fileName
+//				File file = new File(fileName); 
+//				// set stream on file with name: fileName
+//				FileOutputStream stream = new FileOutputStream(file); 
+//				// get a fucking buffersize
+//				int buffersize = data.getReceiveBufferSize(); 
+//				byte buffer[] = new byte[buffersize]; // generate buffer
+//				while (true) {
+//					if (data.getDataSocketInput().available() != 0) {
+//						data.getDataSocketInput().read(buffer);
+//					}
+//					break;
+//				}
+//
+//				stream.write(buffer); // write into file
+//			} catch (FileNotFoundException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (SocketException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//
+//			// data.readDataInputStream();
+//			// FtpServerAnswerMessages.readInputStream();
+//			data.closeDataSocket();
+//			return true;
+//		}
+//		return false;
+//	}
 
-	public boolean changeDirectory(String command, String directory) {
-		
-		if (command.contains(rfc765.AccessControlCommands.CHANGE_WORK_DIR)
-				&& directory != null) {
-			FtpMessageSocket.output()
-					.println(rfc765.AccessControlCommands.CHANGE_WORK_DIR + " "
-							+ directory);
-			//FtpServerAnswerMessages.readInputStream();
-			FtpServiceComImpl fservice = new FtpServiceComImpl(data, dataMsg, socketMsg);
-			fservice.userSendLIST();
-		}
-		return false;
-	}
-
-	public boolean downloadFile(String command, String fileName) {
-		// If command == RETR
-		if (command.contains(rfc765.FtpServiceCommands.RETRIEVE)
-				&& fileName != null) {
-			dataMsg.setPasvMode();
-			FtpMessageSocket.output().println(rfc765.FtpServiceCommands.RETRIEVE + " "
-					+ fileName);
-			//FtpServerAnswerMessages.readInputStream();
-
-			try {
-				// generate file: called fileName
-				File file = new File(fileName); 
-				// set stream on file with name: fileName
-				FileOutputStream stream = new FileOutputStream(file); 
-				// get a fucking buffersize
-				int buffersize = data.getReceiveBufferSize(); 
-				byte buffer[] = new byte[buffersize]; // generate buffer
-				while (true) {
-					if (data.getDataSocketInput().available() != 0) {
-						data.getDataSocketInput().read(buffer);
-					}
-					break;
-				}
-
-				stream.write(buffer); // write into file
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SocketException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			// data.readDataInputStream();
-			// FtpServerAnswerMessages.readInputStream();
-			data.closeDataSocket();
-			return true;
-		}
-		return false;
-	}
-
-	public boolean uploadFile(String command, String fileName) {
-		// find command
-		if(command.contains(rfc765.FtpServiceCommands.STORE)
-													&& fileName != null) {
-			//1. list local filesystem
-			//2. set pasv or port mode ~ pasiv transfermode btw activ transfermode
-			dataMsg.setPasvMode();
-			// send rfc command to server
-			FtpMessageSocket.output().println(rfc765.FtpServiceCommands.STORE);
-			// read answer
-		//	FtpServerAnswerMessages.readInputStream();
-			return true;
-		}
-		return false;
-	}
+//	public boolean uploadFile(String command, String fileName) {
+//		// find command
+//		if(command.contains(rfc765.FtpServiceCommands.STORE)
+//													&& fileName != null) {
+//			//1. list local filesystem
+//			//2. set pasv or port mode ~ pasiv transfermode btw activ transfermode
+//			dataMsg.setPasvMode();
+//			// send rfc command to server
+//			socketMsg.output().println(rfc765.FtpServiceCommands.STORE);
+//			// read answer
+//		//	FtpServerAnswerMessages.readInputStream();
+//			return true;
+//		}
+//		return false;
+//	}
 }

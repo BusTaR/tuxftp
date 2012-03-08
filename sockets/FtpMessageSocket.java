@@ -11,9 +11,9 @@ import java.net.UnknownHostException;
 
 public class FtpMessageSocket extends FtpSocket {
 	// 
-    private static PrintWriter out = null;   // writing messages to server
-    private static BufferedReader in = null; // reads server messages, buffered
-    private static InputStreamReader inputstreamreader = null;
+    private PrintWriter out = null;   // writing messages to server
+    private BufferedReader in = null; // reads server messages, buffered
+    private InputStreamReader inputstreamreader = null;
     
     
     public FtpMessageSocket(String address, int port) {
@@ -22,7 +22,7 @@ public class FtpMessageSocket extends FtpSocket {
 	}
 	@Override
 	public
-	void startMessageSocket() {
+	void startSocket() {
 		   try {	   		   
   		   		// get Socket
   		   		socket = new Socket(address, port);
@@ -40,7 +40,7 @@ public class FtpMessageSocket extends FtpSocket {
       } 		  
 	}
 	   				       			
-	public static synchronized InputStream getSocketInput() {
+	public InputStream getSocketInput() {
 	 try {
 		InputStream instream = socket.getInputStream();
 		return instream;
@@ -51,7 +51,7 @@ public class FtpMessageSocket extends FtpSocket {
 	return null;
 	}
 
-	public static synchronized OutputStream getSocketOutput() {
+	public OutputStream getSocketOutput() {
 	 	OutputStream outstream;
 		try {
 			outstream = socket.getOutputStream();
@@ -63,7 +63,7 @@ public class FtpMessageSocket extends FtpSocket {
 	 	return null;
 	}
 
-	public static synchronized PrintWriter output() {
+	public PrintWriter output() {
 	// get output Stream        
 		try {
 			out = new PrintWriter(socket.getOutputStream(), true);
@@ -74,7 +74,7 @@ public class FtpMessageSocket extends FtpSocket {
 		} // write into stream, to server
   return null;
 	}
-	public static synchronized BufferedReader input() {
+	public BufferedReader input() {
 	   // get input Stream
 		try {
 			inputstreamreader = new InputStreamReader(socket.getInputStream());
@@ -86,7 +86,7 @@ public class FtpMessageSocket extends FtpSocket {
            
 	return null;
 	}
-	public static void closeMessageSocket() {
+	public void closeMessageSocket() {
 	  	out.close();
     	try {
 			in.close();

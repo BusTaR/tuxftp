@@ -6,10 +6,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-import socketMessages.FtpServerAnswerMessages;
-import socketMessages.FtpServerDataMessages;
 import sockets.FtpDataSocket;
 import sockets.FtpMessageSocket;
+import sockets.socketMessages.FtpServerDataMessages;
 
 /**
  * @author Tobias Letschka 
@@ -57,7 +56,7 @@ public class RfcMode {
 					System.out.println("command transfered");
 
 				} else {
-					FtpMessageSocket.output().println(stdInString);
+					msg.output().println(stdInString);
 				}
 				/*
 				 * closing userInterface
@@ -109,7 +108,7 @@ public class RfcMode {
 		 */
 
 		if (foundToken[0].contains("HELP") == true) {
-			FtpMessageSocket.output().println("HELP");
+			msg.output().println("HELP");
 			return true;
 		}
 		if (fservice.userSendLIST(foundToken[0]) == true) {
@@ -123,22 +122,22 @@ public class RfcMode {
 		 */
 		int count;
 		if ((count = foundToken.length) > 1) {
-			if (fservice.downloadFile(foundToken[0], foundToken[1]) == true) {
-				return true;
-			}
-			if (fservice.changeDirectory(foundToken[0], foundToken[1]) == true) {
-				return true;
-			}
-			if (fservice.uploadFile(foundToken[0], foundToken[1]) == true) {
-				return true;
-			}
+//			if (fservice.downloadFile(foundToken[0], foundToken[1]) == true) {
+//				return true;
+//			}
+//			if (fservice.changeDirectory(foundToken[0], foundToken[1]) == true) {
+//				return true;
+//			}
+//			if (fservice.uploadFile(foundToken[0], foundToken[1]) == true) {
+//				return true;
+//			}
 		}
 
 		return false; // jump back into endless crycle
 
 	}
 
-	private static boolean inputQuit(String token) {
+	private boolean inputQuit(String token) {
 		String cutstring = "\n";
 		String replacestring = "";
 		String newStdInString;
@@ -148,7 +147,7 @@ public class RfcMode {
 			if (newStdInString.equals("exit") || newStdInString.equals("EXIT")
 					|| newStdInString.equals("quit")) { // Input
 				// handling
-				FtpMessageSocket.output().println("QUIT");
+				msg.output().println("QUIT");
 				return true; // stopping UserInterface
 			}
 			if (newStdInString.equals("QUIT")) {

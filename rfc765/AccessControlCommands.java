@@ -26,30 +26,24 @@ import sockets.FtpMessageSocket;
 public class AccessControlCommands {
 
 
-	public final static String USERNAME = "USER";
-	public final static String PASSWORD = "PASS";
-	public final static String ACCOUNT = "ACC";
-	public final static String CHANGE_WORK_DIR = "CWD";
-	public final static String CHANGE_TO_PARENT_DIR = "CDUP";
-	public final static String STRUCTURE_MOUNT = "SMNT";
-	public final static String REINITIALIZE = "REIN";
-	public final static String LOGOUT = "QUIT";
-
+	private final static String USERNAME = "USER";
+	private final static String PASSWORD = "PASS";
+	private final static String ACCOUNT = "ACC";
+	private final static String CHANGE_WORK_DIR = "CWD";
+	private final static String CHANGE_TO_PARENT_DIR = "CDUP";
+	private final static String STRUCTURE_MOUNT = "SMNT";
+	private final static String REINITIALIZE = "REIN";
+	private final static String LOGOUT = "QUIT";
+	private FtpMessageSocket msgSocket;
+	
+	public AccessControlCommands(FtpMessageSocket msgSocket) {
+		this.msgSocket = msgSocket;
+	}
 	/*
 	 * following methods implements FtpMessagesSocket function to send
 	 * rfc-command to server
 	 */
 
-	/**
-	 * send Username to Server about MessagePort / Socket
-	 * 
-	 */
-	public void sendUserName() {
-
-		System.out.println("> USER: " + AnonymousSession.DEFAULT_USER);
-		FtpMessageSocket.output().println(
-				"USER " + AnonymousSession.DEFAULT_USER);
-	}
 
 	/**
 	 * send Username to Server about MessagePort / Socket
@@ -59,7 +53,7 @@ public class AccessControlCommands {
 	public void sendUserName(String username) {
 		// Send Username to Server
 		System.out.println("> USER: " + username);
-		FtpMessageSocket.output().println("USER " + username);
+		msgSocket.output().println("USER " + username);
 	}
 
 	/**
@@ -68,7 +62,7 @@ public class AccessControlCommands {
 	public void sendPassword() {
 		// Send Password to Server
 		System.out.println("> PASS: " + AnonymousSession.DEFAULT_PASSWORD);
-		FtpMessageSocket.output().println(
+		msgSocket.output().println(
 				"PASS " + AnonymousSession.DEFAULT_PASSWORD);
 	}
 
@@ -80,7 +74,7 @@ public class AccessControlCommands {
 	public void sendPassword(String password) {
 		// Send Password to Server
 		System.out.println("> PASS: " + password);
-		FtpMessageSocket.output().println("PASS " + password);
+		msgSocket.output().println("PASS " + password);
 	}
 
 	/**
@@ -88,7 +82,7 @@ public class AccessControlCommands {
 	 */
 	public void sendAccount() {
 		System.out.println("> ACCT");
-		FtpMessageSocket.output().println("ACCT");
+		msgSocket.output().println("ACCT");
 	}
 
 	/**
@@ -96,7 +90,7 @@ public class AccessControlCommands {
 	 */
 	public void sendChangeWorkingDirectory() {
 		System.out.println("> CWD");
-		FtpMessageSocket.output().println("CWD");
+		msgSocket.output().println("CWD");
 	}
 
 	/**
@@ -104,7 +98,7 @@ public class AccessControlCommands {
 	 */
 	public void sendChangeToParentDirectory() {
 		System.out.println("> CDUP");
-		FtpMessageSocket.output().println("CDUP");
+		msgSocket.output().println("CDUP");
 	}
 
 	/**
@@ -112,7 +106,7 @@ public class AccessControlCommands {
 	 */
 	public void sendSTructureMount() {
 		System.out.println("> SMNT");
-		FtpMessageSocket.output().println("SMNT");
+		msgSocket.output().println("SMNT");
 	}
 
 	/**
@@ -125,7 +119,7 @@ public class AccessControlCommands {
 	 */
 	public void sendRenitialize() {
 		System.out.println("> REIN");
-		FtpMessageSocket.output().println("REIN");
+		msgSocket.output().println("REIN");
 	}
 
 	/**
@@ -143,6 +137,6 @@ public class AccessControlCommands {
 	 */
 	public void sendLogout() {
 		System.out.println("> QUIT");
-		FtpMessageSocket.output().println("QUIT");
+		msgSocket.output().println("QUIT");
 	}
 }

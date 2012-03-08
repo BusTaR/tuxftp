@@ -11,7 +11,7 @@ import sockets.FtpMessageSocket;
  *
  */
 public class TransferParameterCommands {
-	private static sockets.FtpMessageSocket socketMSG;
+	private sockets.FtpMessageSocket socketMSG;
 	
 	
 

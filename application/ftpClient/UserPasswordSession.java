@@ -1,32 +1,32 @@
 package application.ftpClient;
 
 import rfc765.AccessControlCommands;
-import rfc765.FtpServiceCommands;
+import rfc765.ServiceCommands;
 import rfc765.OptionalCommands;
 import rfc765.TransferParameterCommands;
-import socketMessages.FtpServerAnswerMessages;
-import socketMessages.FtpServerDataMessages;
 import sockets.FtpDataSocket;
 import sockets.FtpMessageSocket;
+import sockets.socketMessages.FtpServerAnswerMessages;
+import sockets.socketMessages.FtpServerDataMessages;
 import userInterface.FtpServiceComImpl;
 import userInterface.UserInterface;
 
 public class UserPasswordSession {
-	private static FtpMessageSocket msgSocket;
+	private FtpMessageSocket msgSocket;
 
 	public UserPasswordSession(String address, int port, String user, String pass) {
 		
 		loginSession(address,port,user,pass);
 	}
 
-	   private static void loginSession(String address, int port, String username, String password) {
+	   private void loginSession(String address, int port, String username, String password) {
 		
 
 
 	    	msgSocket = new FtpMessageSocket(address, port);
-	    	msgSocket.startMessageSocket();
-	    	FtpServiceCommands service = new FtpServiceCommands(msgSocket);
-	    	AccessControlCommands access = new AccessControlCommands();
+	    	msgSocket.startSocket();
+	    	ServiceCommands service = new ServiceCommands(msgSocket);
+	    	AccessControlCommands access = new AccessControlCommands(msgSocket);
 	    	TransferParameterCommands transfer = new TransferParameterCommands(msgSocket);
 	    	OptionalCommands optional = new OptionalCommands(msgSocket);
 	    	FtpServerAnswerMessages servAnsw = new FtpServerAnswerMessages(msgSocket);
@@ -35,11 +35,7 @@ public class UserPasswordSession {
 	    	access.sendUserName(username);
 	    	servAnsw.readInputStream();
 	    	access.sendPassword(password);
-	    	try {
-				Thread.sleep(1000);  // wait for server answere
-			} catch (InterruptedException e1) {
-				e1.printStackTrace();
-			}
+	    	
 	    	servAnsw.readInputStream();
 	      	service.sendSystem();
 	      	servAnsw.readInputStream();
@@ -53,23 +49,25 @@ public class UserPasswordSession {
 	    	service.sendPrintWorkingdirectory();
 	    	servAnsw.readInputStream();
 	    	transfer.sendPASV();
-	    	socketMessages.FtpServerDataMessages.readPasvAnswer();
-	    	FtpDataSocket data = new FtpDataSocket(FtpServerDataMessages.getRETURN_IP(), 
-					FtpServerDataMessages.getRETURN_PORT());
-	   
+			FtpServerDataMessages dataMsg = new FtpServerDataMessages(msgSocket);
+			dataMsg.readPasvAnswer();
+		
+			FtpDataSocket data = new FtpDataSocket(dataMsg.getRETURN_IP(),
+					dataMsg.getRETURN_PORT());
+			data.startSocket();
+	  
 	    	
 	    	service.sendLIST();  // server sends a port
 	    	servAnsw.readInputStream();
-	    	FtpServerDataMessages dataMsg = new FtpServerDataMessages(data, msgSocket);
-	    	dataMsg.awaitsLISTanswer();
+	    	//dataMsg.awaitsLISTanswer();
 	    	servAnsw.readInputStream();
-	    	data.closeDataSocket();
+	    	
 	    	FtpServiceComImpl fserver = new FtpServiceComImpl(data, dataMsg, msgSocket);
-	    	UserInterface userInterface = new UserInterface(fserver);
+	    	UserInterface userInterface = new UserInterface(fserver,msgSocket);
 	    	userInterface.Interface();
 	    	System.out.println("Client: Closing Connection");
-	    	FtpMessageSocket.closeMessageSocket();
-	    	
+	    	msgSocket.closeMessageSocket();
+	    	data.closeDataSocket();
 	    }
 
 	

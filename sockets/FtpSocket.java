@@ -7,5 +7,5 @@ public abstract class FtpSocket {
 	protected String address;
 	protected int port;
 	
-	abstract public void startMessageSocket();
+	abstract public void startSocket();
 }

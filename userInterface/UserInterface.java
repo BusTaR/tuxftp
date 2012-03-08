@@ -13,12 +13,14 @@ import sockets.FtpMessageSocket;
  */
 
 public class UserInterface {
-	private static FtpServiceComImpl fservice;
-	public UserInterface(FtpServiceComImpl fservice) {
+	private FtpServiceComImpl fservice;
+	private FtpMessageSocket msgSocket;
+	public UserInterface(FtpServiceComImpl fservice, FtpMessageSocket msgSocket) {
 		this.fservice = fservice;
+		this.msgSocket = msgSocket;
 	}
 	public void Interface() {
-
+		
 		int buffersize = 1024;
 		char stdInbuffer[] = new char[buffersize];
 
@@ -47,7 +49,7 @@ public class UserInterface {
 					System.out.println("command transfered");
 
 				} else {
-					FtpMessageSocket.output().println(stdInString);
+					msgSocket.output().println(stdInString);
 				}
 				/*				
 				closing userInterface
@@ -61,31 +63,22 @@ public class UserInterface {
 
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 	}
 
-	private static void readServerAnswer() {
-		int buffersize = 10000000;
-		int count;
-		char buffer[] = new char[buffersize];
-
+	private void readServerAnswer() {
 		try {
-
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			if (FtpMessageSocket.getSocketInput().available() != 0) { // if
+			if (msgSocket.getSocketInput().available() != 0) { // if
+				int buffersize = msgSocket.getSocketInput().available();
+				int count;
+				char buffer[] = new char[buffersize];
 				// available
-				while (FtpMessageSocket.getSocketInput().available() != 0) { // if
+				while (msgSocket.getSocketInput().available() != 0) { // if
 					// not
 					// available
-					count = FtpMessageSocket.input().read(buffer, 0, buffersize);
+					count = msgSocket.input().read(buffer, 0, buffersize);
 					System.out.println("< Server : ");
 					String fromServer = new String(buffer, 0, count);
 					System.out.println(fromServer);
@@ -136,7 +129,7 @@ public class UserInterface {
 		 * just a command was sent without parameters
 		 */
 		if (foundToken[0].contains("HELP") == true) {
-			FtpMessageSocket.output().println("HELP");
+			msgSocket.output().println("HELP");
 			return true;
 		}
 		if (fservice.userSendLIST(foundToken[0]) == true) {
@@ -149,17 +142,17 @@ public class UserInterface {
 		 * just a command with parameter was send
 		 */
 		int count;
-		if((count = foundToken.length) > 1 ) {
-			if (fservice.downloadFile(foundToken[0], foundToken[1]) == true) {
-				return true;
-			}
-			if(fservice.changeDirectory(foundToken[0], foundToken[1]) == true) {
-				return true;
-			}
-			if(fservice.uploadFile(foundToken[0], foundToken[1]) == true) {
-				return true;
-			}
-		}
+//		if((count = foundToken.length) > 1 ) {
+//			if (fservice.downloadFile(foundToken[0], foundToken[1]) == true) {
+//				return true;
+//			}
+//			if(fservice.changeDirectory(foundToken[0], foundToken[1]) == true) {
+//				return true;
+//			}
+//			if(fservice.uploadFile(foundToken[0], foundToken[1]) == true) {
+//				return true;
+//			}
+//		}
 
 		
 
@@ -178,7 +171,7 @@ public class UserInterface {
 			newStdInString = token.replace(cutstring, replacestring);
 			if (newStdInString.equals("exit") || newStdInString.equals("EXIT") || newStdInString.equals("quit")) { // Input
 				// handling
-				FtpMessageSocket.output().println("QUIT");
+				msgSocket.output().println("QUIT");
 				return true; // stopping UserInterface
 			}
 			if (newStdInString.equals("QUIT")) {

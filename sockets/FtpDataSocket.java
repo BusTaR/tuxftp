@@ -29,7 +29,7 @@ public class FtpDataSocket extends FtpSocket {
 	}
 	@Override
 	public
-	void startMessageSocket() {
+	void startSocket() {
 		try {
 			socket = new Socket(address, port);
 		} catch (UnknownHostException e) {
