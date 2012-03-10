@@ -1,6 +1,6 @@
 package rfc765;
 
-import sockets.FtpMessageSocket;
+import sockets.MessageSocket;
 
 /**
  * @author Tobias Letschka
@@ -12,14 +12,14 @@ import sockets.FtpMessageSocket;
  */
 public class OptionalCommands {
 	
-	private FtpMessageSocket socketMSG;
+	private MessageSocket socketMSG;
 /*	
 
  * SMNT - Structure Mount
  * STOU - Store Unique
  * RMD - Remove Directory
 */
-	public OptionalCommands(FtpMessageSocket socketMSG) {
+	public OptionalCommands(MessageSocket socketMSG) {
 		this.socketMSG = socketMSG;
 	}
 	public void sendStructureMount() {

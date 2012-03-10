@@ -1,9 +1,9 @@
 package userInterface;
 
 import rfc765.ServiceCommands;
-import sockets.FtpDataSocket;
-import sockets.FtpMessageSocket;
-import sockets.socketMessages.FtpServerDataMessages;
+import sockets.DataSocket;
+import sockets.MessageSocket;
+import sockets.socketMessages.ServerDataAnswer;
 
 
 /*
@@ -35,11 +35,11 @@ import sockets.socketMessages.FtpServerDataMessages;
  */
 
 public class FtpServiceComImpl {
-	private FtpDataSocket data;
-	private FtpServerDataMessages dataMsg;
-	private FtpMessageSocket msgSocket;
+	private DataSocket data;
+	private ServerDataAnswer dataMsg;
+	private MessageSocket msgSocket;
 	
-	public FtpServiceComImpl(FtpDataSocket data, FtpServerDataMessages dataMsg, FtpMessageSocket msg ) {
+	public FtpServiceComImpl(DataSocket data, ServerDataAnswer dataMsg, MessageSocket msg ) {
 		this.data = data;
 		this.dataMsg = dataMsg;
 		this.msgSocket = msg;

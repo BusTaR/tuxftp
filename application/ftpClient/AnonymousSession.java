@@ -1,14 +1,13 @@
 package application.ftpClient;
 
-
+import debugging.PassivModeException;
 import rfc765.AccessControlCommands;
 import rfc765.ServiceCommands;
-import rfc765.OptionalCommands;
 import rfc765.TransferParameterCommands;
-import sockets.FtpDataSocket;
-import sockets.FtpMessageSocket;
-import sockets.socketMessages.FtpServerAnswerMessages;
-import sockets.socketMessages.FtpServerDataMessages;
+import sockets.DataSocket;
+import sockets.MessageSocket;
+import sockets.socketMessages.ServerMessagesAnswer;
+import sockets.socketMessages.ServerDataAnswer;
 import userInterface.FtpServiceComImpl;
 import userInterface.UserInterface;
 
@@ -20,25 +19,14 @@ public class AnonymousSession {
 
 	// Class variable
 	public final static int DEFAULT_DATA_PORT = 20; // for active mode
-	public final static int DEFAULT_PORT = 21;
-	public final static String DEFAULT_ADDRESS = "ftp2.de.debian.org";
+
 	public final static String DEFAULT_PATH = "/debian";
 	public final static String DEFAULT_USER = "anonymous";
 	public final static String DEFAULT_PASSWORD = "anonymous@anonymous.de";
-	private static FtpMessageSocket msgSocket;
+	private static MessageSocket msgSocket;
 
-	public AnonymousSession() {
-		anonymousSession();
-	}
-
-	/**
-	 * polymorphy: see also anonymousSession(String address, int port)
-	 * a easy to handling methode to build a anonymous connection to an default Ftp-Server
-	 */
-	private void anonymousSession() {
-
-		anonymousSession(DEFAULT_ADDRESS, DEFAULT_PORT);
-
+	public AnonymousSession(String address, int port) {
+		anonymousSession(address,port);
 	}
 
 	/**
@@ -48,38 +36,44 @@ public class AnonymousSession {
 	private void anonymousSession(String address, int port) {
 
 		
-		msgSocket = new FtpMessageSocket(address,port);
-		msgSocket.startSocket();
+		msgSocket = new MessageSocket(address,port);
 		ServiceCommands service = new ServiceCommands(msgSocket);
 		TransferParameterCommands transfer = new TransferParameterCommands(msgSocket);
-		OptionalCommands optional = new OptionalCommands(msgSocket);
+		//OptionalCommands optional = new OptionalCommands(msgSocket);
 		AccessControlCommands access = new AccessControlCommands(msgSocket);
-		FtpServerAnswerMessages servAnsw = new FtpServerAnswerMessages(msgSocket);
-
+		ServerMessagesAnswer servAnsw = new ServerMessagesAnswer(msgSocket);
+		
+		/*
+		 * 		initialize ftp-connection
+		*/
+		msgSocket.startSocket();
 		access.sendUserName(DEFAULT_USER);
 		servAnsw.readInputStream();
 		
-		access.sendPassword();
-//		try {
-//			Thread.sleep(1000); // wait for server answer
-//		} catch (InterruptedException e1) {
-//
-//			e1.printStackTrace();
-//		}
+		access.sendPassword(DEFAULT_PASSWORD);
 		servAnsw.readInputStream();
 		service.sendSystem();
 		servAnsw.readInputStream();
 		service.sendFEAT();
+    	try {
+			Thread.sleep(1000);  // wait for server answere
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
 		servAnsw.readInputStream();
 		service.sendPrintWorkingdirectory();
 		servAnsw.readInputStream();
 		transfer.sendPASV();
-		FtpServerDataMessages dataMsg = new FtpServerDataMessages(msgSocket);
-		dataMsg.readPasvAnswer();
+		ServerDataAnswer dataMsg = new ServerDataAnswer(msgSocket);
+		try {
+			dataMsg.readPasvAnswer();
+		} catch (PassivModeException e) {
+			e.printStackTrace();
+		}
 		
 		System.out.println("IP: " + dataMsg.getRETURN_IP() 
 									+ " und Port: " +dataMsg.getRETURN_PORT());
-		FtpDataSocket dataSocket = new FtpDataSocket(dataMsg.getRETURN_IP(),
+		DataSocket dataSocket = new DataSocket(dataMsg.getRETURN_IP(),
 				dataMsg.getRETURN_PORT());
 		dataSocket.startSocket();
 	

@@ -1,6 +1,6 @@
 package rfc765;
 
-import sockets.FtpMessageSocket;
+import sockets.MessageSocket;
 
 /**
  * @author Tobias Letschka
@@ -11,7 +11,7 @@ import sockets.FtpMessageSocket;
  *
  */
 public class TransferParameterCommands {
-	private sockets.FtpMessageSocket socketMSG;
+	private sockets.MessageSocket socketMSG;
 	
 	
 
@@ -30,20 +30,20 @@ public class TransferParameterCommands {
 	private final static String FILE_STRUCTURE = "STRU";
 	private final static String TRANSFER_MODE = "MODE";
 	
-	public TransferParameterCommands(FtpMessageSocket socketMSG) {
+	public TransferParameterCommands(MessageSocket socketMSG) {
 		this.socketMSG = socketMSG;
 	}
 	/*	
 	following methods implements FtpMessagesSocket function to send rfc-command to server
 	*/
-	public void sendPORT() {
-		   System.out.println("> PORT:");
-		   socketMSG.output().println("PORT 3000");
+	public void sendPORT(String port) {
+		   System.out.println("> " + DATA_PORT + ":");
+		   socketMSG.output().println(DATA_PORT + " " + port);
 	}
 	public void sendPASV() {
 	   	   // set Passiv Mode
-	   	System.out.println("> PASV mode:");
-	   	socketMSG.output().println("PASV");	
+	   	System.out.println("> " + PASSIVE_MODE + " mode:");
+	   	socketMSG.output().println(PASSIVE_MODE);	
 	   	//Server return: 227 Entering Passive Mode (195,71,9,196,57,223)
 	   	// IP: 195,71,9,196,
 	   	// PORTS: 57,223
@@ -51,15 +51,15 @@ public class TransferParameterCommands {
 	}
 	public void sendRepesentationType() {
 	       // set TransferMode (Binary = I)
-		System.out.println("> TYPE I");
-		socketMSG.output().println("TYPE I");
+		System.out.println("> " + REPRESENTATION_TYPE +  " I");
+		socketMSG.output().println(REPRESENTATION_TYPE + " I");
 	} 
 	public void sendFileStructure() {
-		   System.out.println("> STRU:");
-		   socketMSG.output().println("STRU");
+		   System.out.println("> " + FILE_STRUCTURE +":");
+		   socketMSG.output().println(FILE_STRUCTURE);
 	}
 	public void sendTransferMode() {
-		   System.out.println("> MODE:");
-		   socketMSG.output().println("MODE");
+		   System.out.println("> " + TRANSFER_MODE + ":");
+		   socketMSG.output().println(TRANSFER_MODE);
 	}
 }

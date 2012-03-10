@@ -34,7 +34,7 @@ public class ApplicationFtpClient {
 		
 	}
 	static void testForServerWithAnonyoumsAccount() {
-		new AnonymousSession();  						
+		new AnonymousSession("ftp2.de.debian.org",21);  						
 	}
 
 }

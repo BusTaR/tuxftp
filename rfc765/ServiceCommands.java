@@ -1,6 +1,6 @@
 package rfc765;
 
-import sockets.FtpMessageSocket;
+import sockets.MessageSocket;
 
 
 /**
@@ -15,7 +15,7 @@ import sockets.FtpMessageSocket;
 
 public class ServiceCommands {
 	
-	private FtpMessageSocket socketMSG ;
+	private MessageSocket socketMSG ;
 	
 	/*
 	 * 4.1.3.  FTP SERVICE COMMANDS
@@ -65,7 +65,7 @@ public class ServiceCommands {
 	/*	
 	following methods implements FtpMessagesSocket function to send rfc-command to server
 	*/
-	public ServiceCommands(FtpMessageSocket socketMsg) {
+	public ServiceCommands(MessageSocket socketMsg) {
 		this.socketMSG = socketMsg;
 	}
 	public void sendABORT() {

@@ -5,7 +5,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
-import sockets.FtpMessageSocket;
+import sockets.MessageSocket;
 
 /**
  * @author Tobias Letschka
@@ -14,8 +14,8 @@ import sockets.FtpMessageSocket;
 
 public class UserInterface {
 	private FtpServiceComImpl fservice;
-	private FtpMessageSocket msgSocket;
-	public UserInterface(FtpServiceComImpl fservice, FtpMessageSocket msgSocket) {
+	private MessageSocket msgSocket;
+	public UserInterface(FtpServiceComImpl fservice, MessageSocket msgSocket) {
 		this.fservice = fservice;
 		this.msgSocket = msgSocket;
 	}

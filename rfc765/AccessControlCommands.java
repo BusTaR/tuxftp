@@ -1,6 +1,5 @@
 package rfc765;
-import application.ftpClient.AnonymousSession;
-import sockets.FtpMessageSocket;
+import sockets.MessageSocket;
 
 /**
  * @author Tobias Letschka
@@ -34,9 +33,9 @@ public class AccessControlCommands {
 	private final static String STRUCTURE_MOUNT = "SMNT";
 	private final static String REINITIALIZE = "REIN";
 	private final static String LOGOUT = "QUIT";
-	private FtpMessageSocket msgSocket;
+	private MessageSocket msgSocket;
 	
-	public AccessControlCommands(FtpMessageSocket msgSocket) {
+	public AccessControlCommands(MessageSocket msgSocket) {
 		this.msgSocket = msgSocket;
 	}
 	/*
@@ -52,18 +51,8 @@ public class AccessControlCommands {
 	 */
 	public void sendUserName(String username) {
 		// Send Username to Server
-		System.out.println("> USER: " + username);
-		msgSocket.output().println("USER " + username);
-	}
-
-	/**
-	 * send Password to Server about MessagePort / Socket
-	 */
-	public void sendPassword() {
-		// Send Password to Server
-		System.out.println("> PASS: " + AnonymousSession.DEFAULT_PASSWORD);
-		msgSocket.output().println(
-				"PASS " + AnonymousSession.DEFAULT_PASSWORD);
+		System.out.println("> " + USERNAME + ": " + username);
+		msgSocket.output().println(USERNAME + " " + username);
 	}
 
 	/**
@@ -73,40 +62,40 @@ public class AccessControlCommands {
 	 */
 	public void sendPassword(String password) {
 		// Send Password to Server
-		System.out.println("> PASS: " + password);
-		msgSocket.output().println("PASS " + password);
+		System.out.println(">" + PASSWORD + ": " + password);
+		msgSocket.output().println(PASSWORD + " " + password);
 	}
 
 	/**
 	 * 
 	 */
 	public void sendAccount() {
-		System.out.println("> ACCT");
-		msgSocket.output().println("ACCT");
+		System.out.println("> " + ACCOUNT);
+		msgSocket.output().println(ACCOUNT);
 	}
 
 	/**
 	 * 
 	 */
 	public void sendChangeWorkingDirectory() {
-		System.out.println("> CWD");
-		msgSocket.output().println("CWD");
+		System.out.println("> " + CHANGE_WORK_DIR);
+		msgSocket.output().println(CHANGE_WORK_DIR);
 	}
 
 	/**
 	 * 
 	 */
 	public void sendChangeToParentDirectory() {
-		System.out.println("> CDUP");
-		msgSocket.output().println("CDUP");
+		System.out.println("> " + CHANGE_TO_PARENT_DIR);
+		msgSocket.output().println(CHANGE_TO_PARENT_DIR);
 	}
 
 	/**
 	 * 
 	 */
 	public void sendSTructureMount() {
-		System.out.println("> SMNT");
-		msgSocket.output().println("SMNT");
+		System.out.println("> " + STRUCTURE_MOUNT);
+		msgSocket.output().println(STRUCTURE_MOUNT);
 	}
 
 	/**
@@ -118,8 +107,8 @@ public class AccessControlCommands {
 	 * expected to follow.
 	 */
 	public void sendRenitialize() {
-		System.out.println("> REIN");
-		msgSocket.output().println("REIN");
+		System.out.println("> " + REINITIALIZE);
+		msgSocket.output().println(REINITIALIZE);
 	}
 
 	/**
@@ -136,7 +125,7 @@ public class AccessControlCommands {
      *       logout (QUIT).
 	 */
 	public void sendLogout() {
-		System.out.println("> QUIT");
-		msgSocket.output().println("QUIT");
+		System.out.println("> " + LOGOUT);
+		msgSocket.output().println(LOGOUT);
 	}
 }

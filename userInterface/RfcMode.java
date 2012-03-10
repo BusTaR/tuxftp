@@ -6,9 +6,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-import sockets.FtpDataSocket;
-import sockets.FtpMessageSocket;
-import sockets.socketMessages.FtpServerDataMessages;
+import sockets.DataSocket;
+import sockets.MessageSocket;
+import sockets.socketMessages.ServerDataAnswer;
 
 /**
  * @author Tobias Letschka 
@@ -17,11 +17,11 @@ import sockets.socketMessages.FtpServerDataMessages;
  */
 public class RfcMode {
 	
-	private FtpServerDataMessages dataMsg;
-	private FtpDataSocket data;
-	private FtpMessageSocket msg;
+	private ServerDataAnswer dataMsg;
+	private DataSocket data;
+	private MessageSocket msg;
 
-	public RfcMode(FtpDataSocket data, FtpServerDataMessages dataMsg, FtpMessageSocket msg) {
+	public RfcMode(DataSocket data, ServerDataAnswer dataMsg, MessageSocket msg) {
 		this.data = data;
 		this.dataMsg = dataMsg;
 		this.msg = msg;

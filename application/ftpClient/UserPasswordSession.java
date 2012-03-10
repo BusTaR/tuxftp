@@ -1,18 +1,19 @@
 package application.ftpClient;
 
+import debugging.PassivModeException;
 import rfc765.AccessControlCommands;
 import rfc765.ServiceCommands;
 import rfc765.OptionalCommands;
 import rfc765.TransferParameterCommands;
-import sockets.FtpDataSocket;
-import sockets.FtpMessageSocket;
-import sockets.socketMessages.FtpServerAnswerMessages;
-import sockets.socketMessages.FtpServerDataMessages;
+import sockets.DataSocket;
+import sockets.MessageSocket;
+import sockets.socketMessages.ServerMessagesAnswer;
+import sockets.socketMessages.ServerDataAnswer;
 import userInterface.FtpServiceComImpl;
 import userInterface.UserInterface;
 
 public class UserPasswordSession {
-	private FtpMessageSocket msgSocket;
+	private MessageSocket msgSocket;
 
 	public UserPasswordSession(String address, int port, String user, String pass) {
 		
@@ -23,15 +24,18 @@ public class UserPasswordSession {
 		
 
 
-	    	msgSocket = new FtpMessageSocket(address, port);
-	    	msgSocket.startSocket();
+	    	msgSocket = new MessageSocket(address, port);
+
 	    	ServiceCommands service = new ServiceCommands(msgSocket);
 	    	AccessControlCommands access = new AccessControlCommands(msgSocket);
 	    	TransferParameterCommands transfer = new TransferParameterCommands(msgSocket);
 	    	OptionalCommands optional = new OptionalCommands(msgSocket);
-	    	FtpServerAnswerMessages servAnsw = new FtpServerAnswerMessages(msgSocket);
-	    	
-	    	
+	    	ServerMessagesAnswer servAnsw = new ServerMessagesAnswer(msgSocket);
+
+			/*
+			 * 		initialize ftp-connection
+			*/
+	    	msgSocket.startSocket();
 	    	access.sendUserName(username);
 	    	servAnsw.readInputStream();
 	    	access.sendPassword(password);
@@ -49,10 +53,14 @@ public class UserPasswordSession {
 	    	service.sendPrintWorkingdirectory();
 	    	servAnsw.readInputStream();
 	    	transfer.sendPASV();
-			FtpServerDataMessages dataMsg = new FtpServerDataMessages(msgSocket);
-			dataMsg.readPasvAnswer();
+			ServerDataAnswer dataMsg = new ServerDataAnswer(msgSocket);
+			try {
+				dataMsg.readPasvAnswer();
+			} catch (PassivModeException e) {
+				e.printStackTrace();
+			}
 		
-			FtpDataSocket data = new FtpDataSocket(dataMsg.getRETURN_IP(),
+			DataSocket data = new DataSocket(dataMsg.getRETURN_IP(),
 					dataMsg.getRETURN_PORT());
 			data.startSocket();
 	  
