@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.StringTokenizer;
 
 import debugging.PassivModeException;
-
 import sockets.MessageSocket;
 
 
@@ -15,12 +14,11 @@ import sockets.MessageSocket;
  */
 public class ServerDataAnswer {
 
-	private int port  = 0;
+	private int port  = 21;
 	private String serverIP = "127.0.0.1";
 	private MessageSocket msgSocket;
 	
 	public ServerDataAnswer(MessageSocket msgSocket) {
-		
 		this.msgSocket = msgSocket;
 	}
 
@@ -32,35 +30,7 @@ public class ServerDataAnswer {
 	public String getRETURN_IP() {
 		return serverIP;
 	}
-//	/**
-//	 *  vll dünnschiss ?
-//	 */
-//	public void awaitsLISTanswer() {
-//		while (true) {
-//			try {
-//				// If data are available
-//				if (fdata.getDataSocketInput().available() != 0) {
-//					int counter, buffersize = 10000;
-//					byte buffer[] = new byte[buffersize];
-//					// while data are available -> read into buffer
-//					while ((counter = fdata.getDataSocketInput().available()) != 0) {
-//						int count = 0;
-//						count = fdata.getDataSocketInput().read(buffer, 0,
-//								buffersize);
-//						System.out.println("< Server: ");
-//						String fromServer = new String(buffer, 0, count);
-//						System.out.println(fromServer);
-//					}
-//					break;
-//				}
-//
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
-//
-//	}
+
 
 //	/**
 //	 * non static because every object needs an extra datasocket

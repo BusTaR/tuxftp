@@ -78,7 +78,7 @@ public class DataSocket extends FtpSocket {
 			out = new PrintWriter(socket.getOutputStream(), true);
 			return out;
 		} catch (IOException e) {
-			e.getMessage();
+			System.err.println(e.getMessage());
 			e.printStackTrace();
 		} // write into stream, to server
 		return null;

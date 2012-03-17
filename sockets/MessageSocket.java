@@ -25,18 +25,13 @@ public class MessageSocket extends FtpSocket {
 	void startSocket() {
 		   try {	   		   
   		   		// get Socket
-  		   		socket = new Socket(address, port);
-  		   		
-  		   		// first Server answer       
-		        System.out.println("Server :" + input().readLine());
-		     
-		   
+  		   		socket = new Socket(address, port);     
+  		   		socket.setSoTimeout(300);
       } catch (UnknownHostException e) {
           System.err.println("Don't know about host: " + address);
       } catch (IOException e) {
           System.err.println("Couldn't get I/O for "
                              + "the connection to: " + address);
-          System.exit(1);
       } 		  
 	}
 	   				       			

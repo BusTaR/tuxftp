@@ -6,6 +6,7 @@ import rfc765.ServiceCommands;
 import rfc765.TransferParameterCommands;
 import sockets.DataSocket;
 import sockets.MessageSocket;
+import sockets.socketMessages.ServerDatas;
 import sockets.socketMessages.ServerMessagesAnswer;
 import sockets.socketMessages.ServerDataAnswer;
 import userInterface.FtpServiceComImpl;
@@ -47,12 +48,34 @@ public class AnonymousSession {
 		 * 		initialize ftp-connection
 		*/
 		msgSocket.startSocket();
+    	try {
+			Thread.sleep(1000);  // wait for server answere
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
+		servAnsw.readInputStream();
+		
 		access.sendUserName(DEFAULT_USER);
+    	try {
+			Thread.sleep(1000);  // wait for server answere
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
 		servAnsw.readInputStream();
 		
 		access.sendPassword(DEFAULT_PASSWORD);
+    	try {
+			Thread.sleep(1000);  // wait for server answere
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
 		servAnsw.readInputStream();
 		service.sendSystem();
+    	try {
+			Thread.sleep(1000);  // wait for server answere
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
 		servAnsw.readInputStream();
 		service.sendFEAT();
     	try {
@@ -61,33 +84,55 @@ public class AnonymousSession {
 			e1.printStackTrace();
 		}
 		servAnsw.readInputStream();
+		
 		service.sendPrintWorkingdirectory();
+    	try {
+			Thread.sleep(1000);  // wait for server answere
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
 		servAnsw.readInputStream();
+		
 		transfer.sendPASV();
-		ServerDataAnswer dataMsg = new ServerDataAnswer(msgSocket);
+    	try {
+			Thread.sleep(1000);  // wait for server answere
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
+		ServerDataAnswer dataAnsw = new ServerDataAnswer(msgSocket);
 		try {
-			dataMsg.readPasvAnswer();
+			dataAnsw.readPasvAnswer();
 		} catch (PassivModeException e) {
 			e.printStackTrace();
 		}
 		
-		System.out.println("IP: " + dataMsg.getRETURN_IP() 
-									+ " und Port: " +dataMsg.getRETURN_PORT());
-		DataSocket dataSocket = new DataSocket(dataMsg.getRETURN_IP(),
-				dataMsg.getRETURN_PORT());
+		System.out.println("IP: " + dataAnsw.getRETURN_IP() 
+									+ " und Port: " +dataAnsw.getRETURN_PORT());
+		DataSocket dataSocket = new DataSocket(dataAnsw.getRETURN_IP(),
+				dataAnsw.getRETURN_PORT());
 		dataSocket.startSocket();
-	
+		ServerDatas servDatas = new ServerDatas(dataSocket);
 	
 
-		service.sendLIST(); // server sends a port
+		service.sendLIST(); 
+    	try {
+			Thread.sleep(1000);  // wait for server answere
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
 		servAnsw.readInputStream();
-		//dataMsg.awaitsLISTanswer();
+    	try {
+			Thread.sleep(1000);  // wait for server answere
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
+		servDatas.awaitsLISTanswer();
 		servAnsw.readInputStream();
 		
 
-		FtpServiceComImpl fserver = new FtpServiceComImpl(dataSocket, dataMsg, msgSocket);
-		UserInterface userInterface = new UserInterface(fserver, msgSocket);
-		userInterface.Interface();
+	//	FtpServiceComImpl fserver = new FtpServiceComImpl(dataSocket, dataAnsw, msgSocket);
+	//	UserInterface userInterface = new UserInterface(fserver, msgSocket);
+	//	userInterface.Interface();
 		System.out.println("Client: Closing Connection");
 		msgSocket.closeMessageSocket();
 		dataSocket.closeDataSocket();
