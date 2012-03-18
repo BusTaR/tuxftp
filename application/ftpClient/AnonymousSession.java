@@ -105,15 +105,6 @@ public class AnonymousSession {
 		} catch (PassivModeException e) {
 			e.printStackTrace();
 		}
-		
-		System.out.println("IP: " + dataAnsw.getRETURN_IP() 
-									+ " und Port: " +dataAnsw.getRETURN_PORT());
-		DataSocket dataSocket = new DataSocket(dataAnsw.getRETURN_IP(),
-				dataAnsw.getRETURN_PORT());
-		dataSocket.startSocket();
-		ServerDatas servDatas = new ServerDatas(dataSocket);
-	
-
 		service.sendLIST(); 
     	try {
 			Thread.sleep(1000);  // wait for server answere
@@ -121,11 +112,13 @@ public class AnonymousSession {
 			e1.printStackTrace();
 		}
 		servAnsw.readInputStream();
-    	try {
-			Thread.sleep(1000);  // wait for server answere
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
+		System.out.println("IP: " + dataAnsw.getRETURN_IP() 
+									+ " und Port: " +dataAnsw.getRETURN_PORT());
+		DataSocket dataSocket = new DataSocket(dataAnsw.getRETURN_IP(),
+				dataAnsw.getRETURN_PORT());
+		dataSocket.startSocket();
+		ServerDatas servDatas = new ServerDatas(dataSocket);
+	
 		servDatas.awaitsLISTanswer();
 		servAnsw.readInputStream();
 		

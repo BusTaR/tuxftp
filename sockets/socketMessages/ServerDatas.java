@@ -21,12 +21,9 @@ public class ServerDatas {
 					byte buffer[] = new byte[buffersize];
 					// while data are available -> read into buffer
 					while ((counter = dSocket.getDataSocketInput().read(buffer, 0,
-							buffersize)) != -1) {
-						int count = 0;
-						
-						
+							buffersize)) != -1) {					
 						System.out.println("< Server: ");
-						String fromServer = new String(buffer, 0, count);
+						String fromServer = new String(buffer, 0, counter);
 						System.out.println(fromServer);
 					}
 					break;

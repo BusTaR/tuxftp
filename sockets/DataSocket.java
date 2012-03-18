@@ -100,7 +100,7 @@ public class DataSocket extends FtpSocket {
 	}
 
 	public void closeDataSocket() {
-		out.close();
+		//out.close();
 		try {
 			socket.close();
 		} catch (IOException e) {
