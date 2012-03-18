@@ -102,6 +102,8 @@ public class AnonymousSession {
 		ServerDataAnswer dataAnsw = new ServerDataAnswer(msgSocket);
 		try {
 			dataAnsw.readPasvAnswer();
+			System.out.println("IP: " + dataAnsw.getRETURN_IP() 
+										+ " und Port: " +dataAnsw.getRETURN_PORT());
 		} catch (PassivModeException e) {
 			e.printStackTrace();
 		}
@@ -111,12 +113,12 @@ public class AnonymousSession {
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
-		servAnsw.readInputStream();
-		System.out.println("IP: " + dataAnsw.getRETURN_IP() 
-									+ " und Port: " +dataAnsw.getRETURN_PORT());
+
+    	servAnsw.readInputStream();
 		DataSocket dataSocket = new DataSocket(dataAnsw.getRETURN_IP(),
 				dataAnsw.getRETURN_PORT());
 		dataSocket.startSocket();
+		servAnsw.readInputStream();
 		ServerDatas servDatas = new ServerDatas(dataSocket);
 	
 		servDatas.awaitsLISTanswer();

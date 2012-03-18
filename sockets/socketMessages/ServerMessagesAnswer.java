@@ -68,7 +68,7 @@ public class ServerMessagesAnswer {
 			if ((buffersize = msgSocket.getSocketInput().available()) != 0) { // is any msg available?
 				char buffer[] = new char[buffersize];
 				int count = 0;
-				while(msgSocket.getSocketInput().available() != 0) {		
+				while(msgSocket.getSocketInput().available() != 0)  {
 					count = msgSocket.input().read(buffer, 0, buffersize);
 					System.out.println("< Server: ");
 					String fromServer = new String(buffer, 0, count);
