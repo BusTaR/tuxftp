@@ -42,7 +42,7 @@ public class AnonymousSession {
 		TransferParameterCommands transfer = new TransferParameterCommands(msgSocket);
 		//OptionalCommands optional = new OptionalCommands(msgSocket);
 		AccessControlCommands access = new AccessControlCommands(msgSocket);
-		ServerMessagesAnswer servAnsw = new ServerMessagesAnswer(msgSocket);
+		ServerMessagesAnswer servAnswer = new ServerMessagesAnswer(msgSocket);
 		
 		/*
 		 * 		initialize ftp-connection
@@ -53,7 +53,7 @@ public class AnonymousSession {
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
-		servAnsw.readInputStream();
+		servAnswer.readInputStream();
 		
 		access.sendUserName(DEFAULT_USER);
     	try {
@@ -61,7 +61,7 @@ public class AnonymousSession {
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
-		servAnsw.readInputStream();
+		servAnswer.readInputStream();
 		
 		access.sendPassword(DEFAULT_PASSWORD);
     	try {
@@ -69,21 +69,21 @@ public class AnonymousSession {
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
-		servAnsw.readInputStream();
+		servAnswer.readInputStream();
 		service.sendSystem();
     	try {
 			Thread.sleep(1000);  // wait for server answere
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
-		servAnsw.readInputStream();
+		servAnswer.readInputStream();
 		service.sendFEAT();
     	try {
 			Thread.sleep(1000);  // wait for server answere
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
-		servAnsw.readInputStream();
+		servAnswer.readInputStream();
 		
 		service.sendPrintWorkingdirectory();
     	try {
@@ -91,7 +91,7 @@ public class AnonymousSession {
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
-		servAnsw.readInputStream();
+		servAnswer.readInputStream();
 		
 		transfer.sendPASV();
     	try {
@@ -99,11 +99,11 @@ public class AnonymousSession {
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
-		ServerDataAnswer dataAnsw = new ServerDataAnswer(msgSocket);
+		ServerDataAnswer dataAnswer = new ServerDataAnswer(msgSocket);
 		try {
-			dataAnsw.readPasvAnswer();
-			System.out.println("IP: " + dataAnsw.getRETURN_IP() 
-										+ " und Port: " +dataAnsw.getRETURN_PORT());
+			dataAnswer.readPasvAnswer();
+			System.out.println("IP: " + dataAnswer.getRETURN_IP() 
+										+ " und Port: " +dataAnswer.getRETURN_PORT());
 		} catch (PassivModeException e) {
 			e.printStackTrace();
 		}
@@ -114,15 +114,25 @@ public class AnonymousSession {
 			e1.printStackTrace();
 		}
 
-    	servAnsw.readInputStream();
-		DataSocket dataSocket = new DataSocket(dataAnsw.getRETURN_IP(),
-				dataAnsw.getRETURN_PORT());
-		dataSocket.startSocket();
-		servAnsw.readInputStream();
+    	
+		DataSocket dataSocket = new DataSocket(dataAnswer.getRETURN_IP(),
+				dataAnswer.getRETURN_PORT());
 		ServerDatas servDatas = new ServerDatas(dataSocket);
-	
+		
+		dataSocket.startSocket();
+    	try {
+			Thread.sleep(1000);  // wait for server answere
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
+		servAnswer.readInputStream();
+    	try {
+			Thread.sleep(1000);  // wait for server answere
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
 		servDatas.awaitsLISTanswer();
-		servAnsw.readInputStream();
+		servAnswer.readInputStream();
 		
 
 	//	FtpServiceComImpl fserver = new FtpServiceComImpl(dataSocket, dataAnsw, msgSocket);
