@@ -14,8 +14,8 @@ import sockets.MessageSocket;
  */
 public class ServerDataAnswer {
 
-	private int port  = 21;
-	private String serverIP = "127.0.0.1";
+	private int port  = 0;
+	private String serverIP = "";
 	private MessageSocket msgSocket;
 	
 	public ServerDataAnswer(MessageSocket msgSocket) {
