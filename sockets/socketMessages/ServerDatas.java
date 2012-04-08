@@ -12,28 +12,26 @@ public class ServerDatas {
 	}
 
 	public void awaitsLISTanswer() {
-		while (true) {
 			try {
-				int buffersize = dSocket.getDataSocketInput().available();
+				int buffersize = 0;
 				// If data are available
 				if ((buffersize = dSocket.getDataSocketInput().available()) != 0) {
 					int counter;
 					byte buffer[] = new byte[buffersize];
 					// while data are available -> read into buffer
+					System.out.println("< Data from Server: ");
 					while ((counter = dSocket.getDataSocketInput().read(buffer, 0,
 							buffersize)) != -1) {					
-						System.out.println("< Server: ");
 						String fromServer = new String(buffer, 0, counter);
-						System.out.println(fromServer);
+						System.out.print(fromServer);
+						System.out.println("\nDataSocket Input: " + counter);
 					}
-					break;
 				}
 
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
+		//}
 
 	}
 }
