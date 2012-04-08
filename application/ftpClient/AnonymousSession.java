@@ -48,57 +48,29 @@ public class AnonymousSession {
 		 * 		initialize ftp-connection
 		*/
 		msgSocket.startSocket();
-    	try {
-			Thread.sleep(1000);  // wait for server answere
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
+		this.sleep_(1000);
 		servAnsw.readInputStream();
 		
 		access.sendUserName(DEFAULT_USER);
-    	try {
-			Thread.sleep(1000);  // wait for server answere
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
+		this.sleep_(1000);
 		servAnsw.readInputStream();
 		
 		access.sendPassword(DEFAULT_PASSWORD);
-    	try {
-			Thread.sleep(1000);  // wait for server answere
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
+		this.sleep_(1000);
 		servAnsw.readInputStream();
 		service.sendSystem();
-    	try {
-			Thread.sleep(1000);  // wait for server answere
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
+		this.sleep_(1000);
 		servAnsw.readInputStream();
 		service.sendFEAT();
-    	try {
-			Thread.sleep(1000);  // wait for server answere
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
+		this.sleep_(1000);
 		servAnsw.readInputStream();
 		
 		service.sendPrintWorkingdirectory();
-    	try {
-			Thread.sleep(1000);  // wait for server answere
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
+		this.sleep_(1000);
 		servAnsw.readInputStream();
 		
 		transfer.sendPASV();
-    	try {
-			Thread.sleep(1000);  // wait for server answere
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
+		this.sleep_(1000);
 		ServerDataAnswer dataAnsw = new ServerDataAnswer(msgSocket);
 		try {
 			dataAnsw.readPasvAnswer();
@@ -108,17 +80,13 @@ public class AnonymousSession {
 			e.printStackTrace();
 		}
 		service.sendLIST(); 
-    	try {
-			Thread.sleep(1000);  // wait for server answere
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
+		this.sleep_(1000);
 
     	servAnsw.readInputStream();
 		DataSocket dataSocket = new DataSocket(dataAnsw.getRETURN_IP(),
 				dataAnsw.getRETURN_PORT());
 		dataSocket.startSocket();
-		servAnsw.readInputStream();
+	//	servAnsw.readInputStream();
 		ServerDatas servDatas = new ServerDatas(dataSocket);
 	
 		servDatas.awaitsLISTanswer();
@@ -132,7 +100,22 @@ public class AnonymousSession {
 		msgSocket.closeMessageSocket();
 		dataSocket.closeDataSocket();
 	}
+	private void sleep(int t) { 
+		int end = (int) (System.currentTimeMillis() + t); 
+		while (System.currentTimeMillis() < end) { 
+			try { 
+				Thread.sleep(t); 
+				} catch (InterruptedException e) {
+					e.getStackTrace();
+				} 
+			} 
+		}
 
-
-
+	private void sleep_(int t) { 
+		try { 
+			Thread.sleep(t); 
+			} catch (InterruptedException e) {
+				e.getStackTrace();
+			} 
+		}
 }
