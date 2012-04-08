@@ -48,32 +48,32 @@ public class AnonymousSession {
 		 * 		initialize ftp-connection
 		*/
 		msgSocket.startSocket();
-<<<<<<< HEAD
+
 		this.sleep_(1000);
-		servAnsw.readInputStream();
+		servAnswer.readInputStream();
 		
 		access.sendUserName(DEFAULT_USER);
 		this.sleep_(1000);
-		servAnsw.readInputStream();
+		servAnswer.readInputStream();
 		
 		access.sendPassword(DEFAULT_PASSWORD);
 		this.sleep_(1000);
-		servAnsw.readInputStream();
+		servAnswer.readInputStream();
 		service.sendSystem();
 		this.sleep_(1000);
-		servAnsw.readInputStream();
+		servAnswer.readInputStream();
 		service.sendFEAT();
 		this.sleep_(1000);
-		servAnsw.readInputStream();
+		servAnswer.readInputStream();
 		
 		service.sendPrintWorkingdirectory();
 		this.sleep_(1000);
-		servAnsw.readInputStream();
+		servAnswer.readInputStream();
 		
 		transfer.sendPASV();
 		this.sleep_(1000);
 		ServerDataAnswer dataAnsw = new ServerDataAnswer(msgSocket);
-=======
+
     	try {
 			Thread.sleep(1000);  // wait for server answere
 		} catch (InterruptedException e1) {
@@ -126,7 +126,7 @@ public class AnonymousSession {
 			e1.printStackTrace();
 		}
 		ServerDataAnswer dataAnswer = new ServerDataAnswer(msgSocket);
->>>>>>> e2dbcbd8e345e70b81a3ec868d9f0dd6873be81f
+
 		try {
 			dataAnswer.readPasvAnswer();
 			System.out.println("IP: " + dataAnswer.getRETURN_IP() 
@@ -137,17 +137,13 @@ public class AnonymousSession {
 		service.sendLIST(); 
 		this.sleep_(1000);
 
-<<<<<<< HEAD
-    	servAnsw.readInputStream();
+
+    	servAnswer.readInputStream();
 		DataSocket dataSocket = new DataSocket(dataAnsw.getRETURN_IP(),
 				dataAnsw.getRETURN_PORT());
 		dataSocket.startSocket();
 	//	servAnsw.readInputStream();
-=======
-    	
-		DataSocket dataSocket = new DataSocket(dataAnswer.getRETURN_IP(),
-				dataAnswer.getRETURN_PORT());
->>>>>>> e2dbcbd8e345e70b81a3ec868d9f0dd6873be81f
+
 		ServerDatas servDatas = new ServerDatas(dataSocket);
 		
 		dataSocket.startSocket();
