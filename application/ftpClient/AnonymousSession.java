@@ -24,8 +24,13 @@ public class AnonymousSession {
 	public final static String DEFAULT_PATH = "/debian";
 	public final static String DEFAULT_USER = "anonymous";
 	public final static String DEFAULT_PASSWORD = "anonymous@anonymous.de";
-	private static MessageSocket msgSocket;
-
+	private static MessageSocket msgSocket = null;
+	private ServerMessagesAnswer servAnswer = null;
+	private AccessControlCommands access = null;
+	private ServiceCommands service = null;
+	private TransferParameterCommands transfer = null;
+	private DataSocket dataSocket = null;
+	
 	public AnonymousSession(String address, int port) {
 		anonymousSession(address,port);
 	}
@@ -38,20 +43,31 @@ public class AnonymousSession {
 
 		
 		msgSocket = new MessageSocket(address,port);
-		ServiceCommands service = new ServiceCommands(msgSocket);
-		TransferParameterCommands transfer = new TransferParameterCommands(msgSocket);
+		service = new ServiceCommands(msgSocket);
+		transfer = new TransferParameterCommands(msgSocket);
 		//OptionalCommands optional = new OptionalCommands(msgSocket);
-		AccessControlCommands access = new AccessControlCommands(msgSocket);
-		ServerMessagesAnswer servAnswer = new ServerMessagesAnswer(msgSocket);
+		access = new AccessControlCommands(msgSocket);
+		servAnswer = new ServerMessagesAnswer(msgSocket);
 		
 		/*
 		 * 		initialize ftp-connection
 		*/
 		msgSocket.startSocket();
-
 		this.sleep_(1000);
 		servAnswer.readInputStream();
 		
+		this.initializeConnection();
+		this.initializePasMode();
+		
+
+	//	FtpServiceComImpl fserver = new FtpServiceComImpl(dataSocket, dataAnsw, msgSocket);
+	//	UserInterface userInterface = new UserInterface(fserver, msgSocket);
+	//	userInterface.Interface();
+		System.out.println("Client: Closing Connection");
+		msgSocket.closeMessageSocket();
+		dataSocket.closeDataSocket();
+	}
+	private void initializeConnection() {
 		access.sendUserName(DEFAULT_USER);
 		this.sleep_(1000);
 		servAnswer.readInputStream();
@@ -59,9 +75,11 @@ public class AnonymousSession {
 		access.sendPassword(DEFAULT_PASSWORD);
 		this.sleep_(1000);
 		servAnswer.readInputStream();
+		
 		service.sendSystem();
 		this.sleep_(1000);
 		servAnswer.readInputStream();
+		
 		service.sendFEAT();
 		this.sleep_(1000);
 		servAnswer.readInputStream();
@@ -72,59 +90,14 @@ public class AnonymousSession {
 		
 		transfer.sendPASV();
 		this.sleep_(1000);
-		ServerDataAnswer dataAnsw = new ServerDataAnswer(msgSocket);
+		servAnswer.readInputStream();
 
-    	try {
-			Thread.sleep(1000);  // wait for server answere
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
-		servAnswer.readInputStream();
-		
-		access.sendUserName(DEFAULT_USER);
-    	try {
-			Thread.sleep(1000);  // wait for server answere
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
-		servAnswer.readInputStream();
-		
-		access.sendPassword(DEFAULT_PASSWORD);
-    	try {
-			Thread.sleep(1000);  // wait for server answere
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
-		servAnswer.readInputStream();
-		service.sendSystem();
-    	try {
-			Thread.sleep(1000);  // wait for server answere
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
-		servAnswer.readInputStream();
-		service.sendFEAT();
-    	try {
-			Thread.sleep(1000);  // wait for server answere
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
-		servAnswer.readInputStream();
-		
-		service.sendPrintWorkingdirectory();
-    	try {
-			Thread.sleep(1000);  // wait for server answere
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
-		servAnswer.readInputStream();
-		
+	}
+	
+	private void initializePasMode() {
 		transfer.sendPASV();
-    	try {
-			Thread.sleep(1000);  // wait for server answere
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
+		this.sleep_(1000);
+		
 		ServerDataAnswer dataAnswer = new ServerDataAnswer(msgSocket);
 
 		try {
@@ -139,36 +112,21 @@ public class AnonymousSession {
 
 
     	servAnswer.readInputStream();
-		DataSocket dataSocket = new DataSocket(dataAnsw.getRETURN_IP(),
-				dataAnsw.getRETURN_PORT());
+		dataSocket = new DataSocket(dataAnswer.getRETURN_IP(),
+				dataAnswer.getRETURN_PORT());
 		dataSocket.startSocket();
 	//	servAnsw.readInputStream();
 
 		ServerDatas servDatas = new ServerDatas(dataSocket);
 		
-		dataSocket.startSocket();
-    	try {
-			Thread.sleep(1000);  // wait for server answere
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
+		
+		this.sleep_(1000);
 		servAnswer.readInputStream();
-    	try {
-			Thread.sleep(1000);  // wait for server answere
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
+		this.sleep_(1000);
 		servDatas.awaitsLISTanswer();
 		servAnswer.readInputStream();
-		
-
-	//	FtpServiceComImpl fserver = new FtpServiceComImpl(dataSocket, dataAnsw, msgSocket);
-	//	UserInterface userInterface = new UserInterface(fserver, msgSocket);
-	//	userInterface.Interface();
-		System.out.println("Client: Closing Connection");
-		msgSocket.closeMessageSocket();
-		dataSocket.closeDataSocket();
 	}
+	
 	private void sleep(int t) { 
 		int end = (int) (System.currentTimeMillis() + t); 
 		while (System.currentTimeMillis() < end) { 
