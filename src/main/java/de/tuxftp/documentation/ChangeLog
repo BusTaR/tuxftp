@@ -1,0 +1,21 @@
+29.03.2008
+Classes:
+	FtpServerAnswerMessages.java
+	- fix try-catch Messages/Exception
+	
+	AnonymousSession.java
+	- fix Docu for anonymousSession()
+	- fix Docu for anonymousSeession(String address, int port)
+	
+	AccessControllCommands.java
+	- remove socketMSG-object
+	- call "out" into static way
+	
+Package
+	rfc
+	- Change Name: rfc to rfc765
+	- Add rfc-content as text-file: rfc765.txt
+	
+	rfc959
+	- add as new package
+	- Add rfc-content as text-file: rfc959.txt
