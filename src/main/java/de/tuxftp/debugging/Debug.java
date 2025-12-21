@@ -11,7 +11,7 @@ package de.tuxftp.debugging;
 
 public final class Debug {
 	
-	// if it true all debugging routines will be announced
+	// if it's true all debugging routines will be announced
 	public static final boolean global = false;
 
 }
