@@ -33,10 +33,7 @@ public class AnonymousSession {
 		anonymousSession(address,port);
 	}
 
-	/**
-	 * @param address
-	 * @param port
-	 */
+
 	private void anonymousSession(String address, int port) {
 
 		
