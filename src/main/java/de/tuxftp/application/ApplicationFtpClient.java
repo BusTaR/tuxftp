@@ -4,7 +4,6 @@ import static java.lang.System.in;
 
 import java.util.Scanner;
 
-import org.apache.commons.lang.StringUtils;
 
 import de.tuxftp.application.ftpClients.AnonymousSession;
 import de.tuxftp.application.ftpClients.UserPasswordSession;

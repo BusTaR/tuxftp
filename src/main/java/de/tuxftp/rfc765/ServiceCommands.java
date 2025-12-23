@@ -6,11 +6,8 @@ import de.tuxftp.sockets.MessageSocket;
 
 
 /**
- * @author Tobias Letschka
- * @see http://www.ietf.org/rfc/rfc959.txt
- * @see RFC 959                                                     October 1985
+ * @author Tobias Letschka October 1985
  * @see File Transfer Protocol
- * 
  *
  */
 
