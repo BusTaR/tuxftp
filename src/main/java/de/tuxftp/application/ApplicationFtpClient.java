@@ -2,15 +2,12 @@ package de.tuxftp.application;
 
 import static java.lang.System.in;
 
-import java.util.Scanner;
-
-
 import de.tuxftp.application.ftpClients.AnonymousSession;
-import de.tuxftp.application.ftpClients.UserPasswordSession;
+import java.util.Scanner;
 
 public class ApplicationFtpClient {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		System.out.println("Which kind of connection should be established?");
 		System.out.println("typ 1 for a anonymous session");
 		System.out.println("typ 2 for a user+password session");
@@ -24,9 +21,6 @@ public class ApplicationFtpClient {
 			case (1):
 				ApplicationFtpClient.testForServerWithAnonyoumsAccount();
 				break;
-			case (2):
-				ApplicationFtpClient.testforServerWithUserPasswortAccount();
-				break;
 			}
 		} finally {
 			scanner.close();
@@ -34,13 +28,8 @@ public class ApplicationFtpClient {
 
 	}
 
-	private static void testforServerWithUserPasswortAccount() {
-		new UserPasswordSession("pr0-talk.de", 21, "web16", "Password");
-		
 
-	}
-
-	static void testForServerWithAnonyoumsAccount() {
+	static void testForServerWithAnonyoumsAccount() throws Exception {
 		new AnonymousSession("ftp2.de.debian.org", 21);
 	}
 

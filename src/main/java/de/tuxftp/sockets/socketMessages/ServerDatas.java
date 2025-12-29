@@ -1,8 +1,7 @@
 package de.tuxftp.sockets.socketMessages;
 
-import java.io.IOException;
-
 import de.tuxftp.sockets.DataSocket;
+import java.io.IOException;
 
 public class ServerDatas {
 	private DataSocket dSocket;

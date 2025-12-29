@@ -1,12 +1,11 @@
 package de.tuxftp.userInterface;
 
 
+import de.tuxftp.sockets.MessageSocket;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
-
-import de.tuxftp.sockets.MessageSocket;
 
 /**
  * @author Tobias Letschka

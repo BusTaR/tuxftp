@@ -1,17 +1,7 @@
 package de.tuxftp.rfc765;
 
-import java.io.File;
-
 import de.tuxftp.sockets.MessageSocket;
 
-/**
- * @author Tobias Letschka
- * @see http://www.ietf.org/rfc/rfc959.txt
- * @see RFC 959                                                     October 1985
- * @see File Transfer Protocol
- * 
- *
- */
 public class OptionalCommands {
 	
 	private MessageSocket socketMSG;

@@ -1,8 +1,7 @@
 package de.tuxftp.sockets.socketMessages;
 
-import java.io.IOException;
-
 import de.tuxftp.sockets.MessageSocket;
+import java.io.IOException;
 
 
 

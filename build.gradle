@@ -1,17 +1,40 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
+    alias(libs.plugins.lombok)
+    id "com.diffplug.spotless" version "7.0.0"
 }
 
 
 version = '0.0.1'
 group = 'lsd.de'
 
-repositories {
-    mavenLocal()
-    mavenCentral()
+
+spotless {
+    java {
+        importOrder()
+        removeUnusedImports()
+        googleJavaFormat()
+        formatAnnotations()
+    }
 }
 
+tasks.withType(Javadoc) {
+    // 1. Nur Java-Dateien (verhindert Fehler durch .txt, .png etc.)
+    source = sourceSets.main.allJava
+
+    // 2. Classpath sicherstellen
+    classpath = sourceSets.main.compileClasspath
+
+    options {
+        // 3. Preview für Java 25 aktivieren
+        addBooleanOption("-enable-preview", true)
+        addStringOption("source", "25")
+        // 4. Encoding sicherstellen (verhindert Fehler bei Umlauten)
+        encoding = 'UTF-8'
+        charSet = 'UTF-8'
+    }
+}
 
 java {
     toolchain {
@@ -23,20 +46,31 @@ java {
     withJavadocJar()
 }
 
+
 dependencies {
+    implementation libs.slf4j.api
+    runtimeOnly libs.slf4j.simple
 
+    // Lombok für den Haupt-Quellcode
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
 
-    implementation 'org.apache.commons:commons-lang3:3.20.0'
-
-    // Testabhängigkeiten
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
+    // Lombok für Test-Quellcode
+    testCompileOnly libs.lombok
+    testAnnotationProcessor libs.lombok
 }
 
 tasks.named('test') {
     useJUnitPlatform()
 }
 
+tasks.withType(JavaCompile) {
+    options.compilerArgs += ["--enable-preview"]
+}
+
+test {
+    jvmArgs += ["--enable-preview"]
+}
 
 publishing {
     publications {

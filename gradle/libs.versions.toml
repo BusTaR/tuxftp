@@ -1,0 +1,14 @@
+[versions]
+slf4j = "2.0.17"
+lombok = "1.18.42"
+
+[plugins]
+lombok = { id = "io.freefair.lombok", version = "9.1.0" }
+
+[libraries]
+slf4j-api = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4j" }
+slf4j-simple = { group = "org.slf4j", name = "slf4j-simple", version.ref = "slf4j" }
+lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
+
+[bundles]
+logging = ["slf4j-api", "slf4j-simple"]

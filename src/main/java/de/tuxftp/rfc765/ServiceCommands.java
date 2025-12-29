@@ -1,8 +1,7 @@
 package de.tuxftp.rfc765;
 
-import java.io.File;
-
 import de.tuxftp.sockets.MessageSocket;
+import java.io.File;
 
 
 /**

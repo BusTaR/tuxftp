@@ -1,10 +1,9 @@
 package de.tuxftp.sockets.socketMessages;
 
-import java.io.IOException;
-import java.util.StringTokenizer;
-
 import de.tuxftp.debugging.PassivModeException;
 import de.tuxftp.sockets.MessageSocket;
+import java.io.IOException;
+import java.util.StringTokenizer;
 
 
 /**

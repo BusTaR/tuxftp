@@ -1,16 +1,5 @@
 package de.tuxftp.rfc765;
-import java.io.File;
-
 import de.tuxftp.sockets.MessageSocket;
-
-/**
- * @author Tobias Letschka
- * @see http://www.ietf.org/rfc/rfc959.txt
- * @see RFC 959                                                     October 1985
- * @see File Transfer Protocol
- * 
- *
- */
 
 /*
  * 4.1.1. ACCESS CONTROL COMMANDS 
@@ -37,9 +26,9 @@ public class AccessControlCommands {
 	private final static String LOGOUT = "QUIT";
 	private MessageSocket msgSocket;
 	
-	public AccessControlCommands(MessageSocket msgSocket) {
-		this.msgSocket = msgSocket;
-	}
+//	public AccessControlCommands(MessageSocket msgSocket) {
+/*		this.msgSocket = msgSocket;
+	}*/
 	/*
 	 * following methods implements FtpMessagesSocket function to send
 	 * rfc-command to server
